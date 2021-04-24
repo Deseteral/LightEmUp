@@ -22,6 +22,11 @@ public class Enemy : MonoBehaviour {
     }
 
     private void Update() {
+        Vector2 position = transform.position;
+        Vector2 playerPosition = player.transform.position;
+        float distanceToPlayer = Vector2.Distance(position, playerPosition);
+        Vector2 directionToPlayer = (playerPosition - position).normalized;
+
         timer.Update();
 
         // Randomly change position
@@ -30,9 +35,8 @@ public class Enemy : MonoBehaviour {
         }
 
         // Is attracted to player?
-        float distanceToPlayer = Vector2.Distance(transform.position, player.transform.position);
-        if (distanceToPlayer <= AttentionRadius) {
-            delta = (player.transform.position - transform.position).normalized;
+        if (CanSeePlayer(directionToPlayer, distanceToPlayer) && distanceToPlayer <= AttentionRadius) {
+            delta = directionToPlayer;
         }
 
         // Apply force
@@ -51,6 +55,13 @@ public class Enemy : MonoBehaviour {
         if (target.gameObject.name == "Walls") {
             ChangeDirection(delta * -1);
         }
+    }
+
+    private bool CanSeePlayer(Vector2 directionToPlayer, float distanceToPlayer) {
+        int tilemapAndPlayerMask = (1 << 7) | (1 << 8);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer + 10f, tilemapAndPlayerMask);
+
+        return hit.collider != null && hit.collider.gameObject.name == "Player";
     }
 
     private void DrawCircle(Vector2 centerPosition, float radius, Color color) {
