@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66044e262c9d94c85b1d323bc172a903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasPower: 0
   center: {fileID: 656157377453216539}
   directionalSprites:
   - {fileID: 656157377915221260}
