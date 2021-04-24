@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     public float Speed = 3f;
 
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
 
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
