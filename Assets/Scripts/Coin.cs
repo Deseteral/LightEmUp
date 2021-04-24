@@ -22,7 +22,7 @@ public class Coin : MonoBehaviour {
         float distanceToPlayer = Vector2.Distance(position, playerPosition);
         float speedScale = (1f / distanceToPlayer) * 4f;
         
-        if (distanceToPlayer < 2f) {
+        if (distanceToPlayer < 3f) {
             rigidbody.AddForce(directionToPlayer * speedScale, ForceMode2D.Force);
         }
     }
