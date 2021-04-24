@@ -14,6 +14,6 @@ public class Lamp : MonoBehaviour {
     }
 
     private void Update() {
-        spriteRenderer.color = electricalDevice.hasPower ? ENABLED_COLOR : DISABLED_COLOR;
+        spriteRenderer.color = electricalDevice.hasPower ? ENABLED_COLOR : DISABLED_COLOR; // TODO: POTENTIAL PREF PROBLEM
     }
 }

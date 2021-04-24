@@ -28,8 +28,6 @@ public class EnemySpawner : MonoBehaviour {
     }
 
     void Update() {
-        return;
-        
         Vector2 position = transform.position;
         Vector2 playerPosition = player.transform.position;
         float distanceToPlayer = Vector2.Distance(position, playerPosition);
