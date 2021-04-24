@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEditorInternal.VersionControl;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -18,11 +15,19 @@ public class MapGenerator : MonoBehaviour {
     private bool[,] m;
 
     void Start() {
-        CelluarAutomata();
-        RemoveClosedRooms();
+        bool isValidMap = false;
 
-        var (spawnX, spawnY) = FindSpawnPoint();
-        GameObject.Find("Player").transform.position = new Vector3(spawnX, spawnY, 0);
+        while (!isValidMap) {
+            CelluarAutomata();
+            RemoveClosedRooms();
+
+            var (spawnX, spawnY) = FindSpawnPoint();
+
+            if (spawnX == -1 || spawnY == -1) continue;
+            isValidMap = true;
+            
+            GameObject.Find("Player").transform.position = new Vector3(spawnX, spawnY, 0);
+        }
 
         ApplyMapToTilemap();
     }
@@ -129,15 +134,14 @@ public class MapGenerator : MonoBehaviour {
     }
 
     private (int, int) FindSpawnPoint() {
-        int distance = -1;
-
-        while (true) {
-            distance++;
-            if (m[distance, distance] == false) return (distance, distance); // TODO: IndexOutOfBounds
+        for (int distance = 0; distance < (Size/2); distance++) {
+            if (m[distance, distance] == false) return (distance, distance);
             if (m[distance, Size-1-distance] == false) return (distance, Size - 1 - distance);
             if (m[Size-1-distance, distance] == false) return (Size-1-distance, distance);
             if (m[Size-1-distance, Size-1-distance] == false) return (Size-1-distance, Size-1-distance);
         }
+
+        return (-1, -1);
     }
 
     private void ApplyMapToTilemap() {
