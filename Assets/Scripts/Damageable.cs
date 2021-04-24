@@ -17,6 +17,9 @@ public class Damageable : MonoBehaviour {
 
     void Update() {
         if (health <= 0) {
+            var enemy = GetComponent<Enemy>();
+            if (enemy != null) enemy.OnDeath();
+            
             Destroy(gameObject);
         }
 

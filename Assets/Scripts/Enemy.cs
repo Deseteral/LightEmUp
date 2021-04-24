@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour {
 
     private new Rigidbody2D rigidbody;
     private GameObject player;
+    private EnemySpawner parent;
 
     private void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -21,6 +22,9 @@ public class Enemy : MonoBehaviour {
         Vector2 position = transform.position;
         Vector2 playerPosition = player.transform.position;
         float distanceToPlayer = Vector2.Distance(position, playerPosition);
+        
+        if (distanceToPlayer > 15f) return; // Perf optimization
+
         Vector2 directionToPlayer = (playerPosition - position).normalized;
 
         timer.Update();
@@ -58,6 +62,14 @@ public class Enemy : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer + 10f, tilemapAndPlayerMask);
 
         return hit.collider != null && hit.collider.gameObject.CompareTag("Player");
+    }
+
+    public void SetParent(EnemySpawner enemySpawner) {
+        parent = enemySpawner;
+    }
+
+    public void OnDeath() {
+        parent.ChildrenDied();
     }
 
     // private void DrawCircle(Vector2 centerPosition, float radius, Color color) {

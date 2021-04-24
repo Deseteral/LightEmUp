@@ -20,5 +20,9 @@ namespace DefaultNamespace {
                 list[n] = value;
             }
         }
+
+        public static (int, int) VectorToTilemapCoord(Vector2 vector) {
+            return ((int)(vector.x - 0.5), (int)(vector.y - 0.5));
+        }
     }
 }

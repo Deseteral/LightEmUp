@@ -14,7 +14,7 @@ public class MapGenerator : MonoBehaviour {
     
     public GameObject enemySpawner;
     
-    public int size = 100;
+    public int size = 50;
 
     private bool[,] m;
 
@@ -37,9 +37,7 @@ public class MapGenerator : MonoBehaviour {
         ApplyMapToTilemap();
         
         // Place spawners
-        var findEnemySpawnerPositions = FindEnemySpawnerPositions();
-        Debug.Log(findEnemySpawnerPositions.Count);
-        foreach (var (spawnerX, spawnerY) in findEnemySpawnerPositions) {
+        foreach (var (spawnerX, spawnerY) in FindEnemySpawnerPositions()) {
             var spawnerPosition = new Vector3(spawnerX + 0.5f, spawnerY + 0.5f);
             Instantiate(enemySpawner, spawnerPosition, Quaternion.identity);
         }
@@ -166,7 +164,7 @@ public class MapGenerator : MonoBehaviour {
             }
         }
         
-        float percentOfSpawnerTiles = 5f / 100f;
+        float percentOfSpawnerTiles = 2f / 100f;
         int floorsToTake = (int) (floors.Count * percentOfSpawnerTiles);
         floors.Shuffle();
 
@@ -209,5 +207,9 @@ public class MapGenerator : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public bool[,] GetCollisonMap() {
+        return m;
     }
 }

@@ -757,7 +757,7 @@ MonoBehaviour:
   groundTile: {fileID: 11400000, guid: dd007d35597034123b116dfe5938c629, type: 2}
   wallTile: {fileID: 11400000, guid: 8117f2a2a33674da9a4f4d0850804235, type: 2}
   enemySpawner: {fileID: 8204885434059153406, guid: 016f11b554c02402b9c2fd03e8434492, type: 3}
-  size: 100
+  size: 50
 --- !u!4 &1236830760
 Transform:
   m_ObjectHideFlags: 0
