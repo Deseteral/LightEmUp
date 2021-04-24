@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour {
-    public GameObject EnemyPrefab;
+    public GameObject enemyPrefab;
     
     private Timer nextSpawnTimer = new Timer();
 
@@ -17,7 +15,7 @@ public class EnemySpawner : MonoBehaviour {
     void Update() {
         if (nextSpawnTimer.Check()) {
             var spawnPosition = transform.position + (Vector3)(Vector2.right * 2f);
-            Instantiate(EnemyPrefab, spawnPosition, Quaternion.identity);
+            Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
             
             nextSpawnTimer.Set(Random.Range(NEXT_SPAWN_TIME_MIN_MS, NEXT_SPAWN_TIME_MAX_MS));
         }

@@ -4,13 +4,13 @@ using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class MapGenerator : MonoBehaviour {
-    public Tilemap Ground;
-    public Tilemap Walls;
+    public Tilemap ground;
+    public Tilemap walls;
 
-    public Tile GroundTile;
-    public Tile WallTile;
+    public Tile groundTile;
+    public Tile wallTile;
     
-    public int Size = 512;
+    public int size = 64;
 
     private bool[,] m;
 
@@ -33,7 +33,7 @@ public class MapGenerator : MonoBehaviour {
     }
 
     private void CelluarAutomata() {
-        m = new bool[Size, Size];
+        m = new bool[size, size];
 
         int numberOfSteps = 2;
         int birthLimit = 5;
@@ -41,17 +41,17 @@ public class MapGenerator : MonoBehaviour {
         float chanceToStartAlive = 0.49f;
 
         // Initialization
-        for (int y = 0; y < Size; y++) {
-            for (int x = 0; x < Size; x++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 m[x, y] = Random.Range(0f, 1f) < chanceToStartAlive;
             }
         }
 
         // Simulation step
         for (int step = 0; step < numberOfSteps; step++) {
-            var newMap = new bool[Size, Size];
-            for (int y = 0; y < Size; y++) {
-                for (int x = 0; x < Size; x++) {
+            var newMap = new bool[size, size];
+            for (int y = 0; y < size; y++) {
+                for (int x = 0; x < size; x++) {
                     var nc = CountNeighbours(x, y);
                     if (m[x, y]) {
                         newMap[x, y] = nc < deathLimit ? false : true;
@@ -67,14 +67,14 @@ public class MapGenerator : MonoBehaviour {
         }
         
         // Make enclosing walls
-        for (int x = 0; x < Size; x++) {
+        for (int x = 0; x < size; x++) {
             m[x, 0] = true; // top
-            m[x, Size - 1] = true; // bottom
+            m[x, size - 1] = true; // bottom
         }
 
-        for (int y = 0; y < Size; y++) {
+        for (int y = 0; y < size; y++) {
             m[0, y] = true; // left
-            m[Size - 1, y] = true; // right
+            m[size - 1, y] = true; // right
         }
         
     }
@@ -87,7 +87,7 @@ public class MapGenerator : MonoBehaviour {
                 int nx = x + i;
                 int ny = y + j;
 
-                if ((nx < 0 || ny < 0 || nx >= Size || ny >= Size) || m[nx, ny]) {
+                if ((nx < 0 || ny < 0 || nx >= size || ny >= size) || m[nx, ny]) {
                     count++;
                 }
             }
@@ -97,11 +97,11 @@ public class MapGenerator : MonoBehaviour {
     }
 
     private void RemoveClosedRooms() {
-        var floodMap = new bool[Size, Size];
+        var floodMap = new bool[size, size];
         var queue = new List<(int, int)>();
 
-        floodMap[Size / 2, Size / 2] = true;
-        queue.Add((Size / 2, Size / 2));
+        floodMap[size / 2, size / 2] = true;
+        queue.Add((size / 2, size / 2));
         
         // Mark neighbours
         while (queue.Count > 0) {
@@ -116,7 +116,7 @@ public class MapGenerator : MonoBehaviour {
                     int ny = y + j;
                     
                     if (
-                        (nx >= 0 && ny >= 0 && nx < Size && ny < Size) &&
+                        (nx >= 0 && ny >= 0 && nx < size && ny < size) &&
                         (m[nx, ny] == false && floodMap[nx, ny] == false)
                     ) {
                         floodMap[nx, ny] = true;
@@ -126,35 +126,35 @@ public class MapGenerator : MonoBehaviour {
             }
         }
 
-        for (int y = 0; y < Size; y++) {
-            for (int x = 0; x < Size; x++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 if (m[x, y] == false && floodMap[x, y] == false) m[x, y] = true;
             }
         }
     }
 
     private (int, int) FindSpawnPoint() {
-        for (int distance = 0; distance < (Size/2); distance++) {
+        for (int distance = 0; distance < (size/2); distance++) {
             if (m[distance, distance] == false) return (distance, distance);
-            if (m[distance, Size-1-distance] == false) return (distance, Size - 1 - distance);
-            if (m[Size-1-distance, distance] == false) return (Size-1-distance, distance);
-            if (m[Size-1-distance, Size-1-distance] == false) return (Size-1-distance, Size-1-distance);
+            if (m[distance, size-1-distance] == false) return (distance, size - 1 - distance);
+            if (m[size-1-distance, distance] == false) return (size-1-distance, distance);
+            if (m[size-1-distance, size-1-distance] == false) return (size-1-distance, size-1-distance);
         }
 
         return (-1, -1);
     }
 
     private void ApplyMapToTilemap() {
-        for (int y = 0; y < Size; y++) {
-            for (int x = 0; x < Size; x++) {
-                Ground.SetTile(new Vector3Int(x, y, 0), GroundTile);
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                ground.SetTile(new Vector3Int(x, y, 0), groundTile);
             }
         }
         
-        for (int y = 0; y < Size; y++) {
-            for (int x = 0; x < Size; x++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 if (m[x, y]) {
-                    Walls.SetTile(new Vector3Int(x, y, 0), WallTile);   
+                    walls.SetTile(new Vector3Int(x, y, 0), wallTile);   
                 }
             }
         }

@@ -1,18 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour {
-    public float Speed = 3f;
-    public float AttentionRadius = 4f;
+    public float speed = 3f;
+    public float attentionRadius = 5.5f;
 
     private Vector2 delta = Vector2.zero;
     private Timer timer = new Timer();
 
     private new Rigidbody2D rigidbody;
-
     private GameObject player;
 
     private void Start() {
@@ -35,12 +31,12 @@ public class Enemy : MonoBehaviour {
         }
 
         // Is attracted to player?
-        if (CanSeePlayer(directionToPlayer, distanceToPlayer) && distanceToPlayer <= AttentionRadius) {
+        if (CanSeePlayer(directionToPlayer, distanceToPlayer) && distanceToPlayer <= attentionRadius) {
             delta = directionToPlayer;
         }
 
         // Apply force
-        rigidbody.AddForce(delta * Speed, ForceMode2D.Force);
+        rigidbody.AddForce(delta * speed, ForceMode2D.Force);
 
         // DrawCircle(transform.position, AttentionRadius, Color.red);
     }

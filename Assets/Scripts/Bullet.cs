@@ -1,16 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
-    public Vector2 Direction = Vector2.zero;
-    public float Speed = 0.1f;
+    public Vector2 direction = Vector2.zero;
+    public float speed = 0.25f;
     
     void Start() { }
 
     private void FixedUpdate() {
         var position = transform.position;
-        position = position + ((Vector3)Direction * Speed);
+        position = position + ((Vector3)direction * speed);
         transform.position = position;
     }
     

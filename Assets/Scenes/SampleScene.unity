@@ -752,11 +752,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6070fe08c0cb8468dbd1253074e1b61f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Ground: {fileID: 252515646}
-  Walls: {fileID: 744577324}
-  GroundTile: {fileID: 11400000, guid: dd007d35597034123b116dfe5938c629, type: 2}
-  WallTile: {fileID: 11400000, guid: 8117f2a2a33674da9a4f4d0850804235, type: 2}
-  Size: 64
+  ground: {fileID: 252515646}
+  walls: {fileID: 744577324}
+  groundTile: {fileID: 11400000, guid: dd007d35597034123b116dfe5938c629, type: 2}
+  wallTile: {fileID: 11400000, guid: 8117f2a2a33674da9a4f4d0850804235, type: 2}
+  size: 64
 --- !u!4 &1236830760
 Transform:
   m_ObjectHideFlags: 0
