@@ -33,7 +33,7 @@ public class Damageable : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.collider.CompareTag("Bullet") && ignoreBullets == false) {
-            health -= 5;
+            health -= 34;
             blink = true;
         }
         
