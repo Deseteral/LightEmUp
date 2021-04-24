@@ -8,9 +8,11 @@ using Random = UnityEngine.Random;
 public class MapGenerator : MonoBehaviour {
     public Tilemap ground;
     public Tilemap walls;
+    public Tilemap shadow;
 
     public Tile groundTile;
     public Tile wallTile;
+    public Tile shadowTile;
     
     public GameObject enemySpawner;
     
@@ -217,12 +219,18 @@ public class MapGenerator : MonoBehaviour {
                 ground.SetTile(new Vector3Int(x, y, 0), groundTile);
             }
         }
-        
+
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
                 if (m[x, y]) {
-                    walls.SetTile(new Vector3Int(x, y, 0), wallTile);   
+                    walls.SetTile(new Vector3Int(x, y, 0), wallTile);
                 }
+            }
+        }
+
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                shadow.SetTile(new Vector3Int(x, y, 0), shadowTile);
             }
         }
     }

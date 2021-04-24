@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Spawner
   - Coin
+  - Light
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Bullets
   - Spawners
   - Coins
-  - 
+  - Lights
   - 
   - 
   - 
@@ -56,4 +57,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 1521469663
+    locked: 0
+  - name: ShadowTiles
+    uniqueID: 3924677021
     locked: 0
