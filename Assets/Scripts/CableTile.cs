@@ -20,8 +20,6 @@ public class CableTile : MonoBehaviour {
         for (int index = 0; index < neighbours.Count; index++) {
             directionalSprites[index].enabled = neighbours[index];
         }
-
-        Debug.Log(hasPower);
         
         // Change color based on power status
         if (hasPower) {

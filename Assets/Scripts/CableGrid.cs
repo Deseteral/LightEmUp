@@ -41,6 +41,25 @@ public class CableGrid : MonoBehaviour {
         }
     }
 
+    public void RemoveCable(int x, int y) {
+        // Check if there is cable to be removed
+        var coord = (x, y);
+        if (cableTiles.Keys.Contains(coord) == false) return;
+        
+        // Destroy game object and update maps
+        Destroy(cableTiles[coord].gameObject);
+        cableTiles.Remove(coord);
+        map[x, y] = false;
+
+        // Regenerate power information
+        RegeneratePowerInfo();
+        
+        // Reset sprites on all cables
+        foreach (var key in cableTiles.Keys) {
+            cableTiles[key].ResetSprites(GetNeighbourCables(key.Item1, key.Item2));
+        }
+    }
+
     private List<bool> GetNeighbourCables(int x, int y) {
         var (generatorX, generatorY) = mapGenerator.generatorCoords;
         List<bool> neighbours = new List<bool>();

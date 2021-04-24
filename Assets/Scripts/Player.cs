@@ -26,6 +26,8 @@ public class Player : MonoBehaviour {
     }
 
     void FixedUpdate() {
+        var mouseInWorld = Utils.MouseInWorld();
+        
         Vector2 delta = Vector2.zero;
         if (Input.GetKey(KeyCode.W)) delta.y += speed;
         if (Input.GetKey(KeyCode.S)) delta.y -= speed;
@@ -36,17 +38,23 @@ public class Player : MonoBehaviour {
 
         // Place cable
         if (Input.GetMouseButton(1)) {
-            var pos = Utils.MouseInWorld();
-            var tileX = (int)pos.x;
-            var tileY = (int)pos.y;
+            var tileX = (int)mouseInWorld.x;
+            var tileY = (int)mouseInWorld.y;
             
             cableGrid.PlaceCable(tileX, tileY);
+        }
+        
+        // Remove cable
+        if (Input.GetKeyDown(KeyCode.R)) {
+            var tileX = (int)mouseInWorld.x;
+            var tileY = (int)mouseInWorld.y;
+            
+            cableGrid.RemoveCable(tileX, tileY);
         }
 
         // Shoot
         if (Input.GetMouseButton(0) && shootingDelayTimer.Check()) {
             var position = transform.position;
-            var mouseInWorld = Utils.MouseInWorld();
             Vector2 shootingDirection = (mouseInWorld - position).normalized;
             var bulletPosition = (Vector2) transform.position + shootingDirection;
 
