@@ -9,15 +9,15 @@ public class Player : MonoBehaviour {
     public int coins = 0;
     public GameObject bulletPrefab;
 
-    public GameObject debugSpawnPrefab; // TODO: DEBUG REMOVE
-
     private new Rigidbody2D rigidbody;
     private Timer shootingDelayTimer = new Timer();
     private GameObject bulletsContainer;
+    private CableGrid cableGrid;
 
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
         bulletsContainer = GameObject.Find("BulletsContainer");
+        cableGrid = GameObject.Find("CableGrid").GetComponent<CableGrid>();
         shootingDelayTimer.Set(0);
     }
 
@@ -34,11 +34,13 @@ public class Player : MonoBehaviour {
 
         rigidbody.AddForce(delta, ForceMode2D.Force);
 
-        // Debug spawn enemy
-        // TODO: DEBUG REMOVE
-        if (Input.GetMouseButtonDown(1)) {
+        // Place cable
+        if (Input.GetMouseButton(1)) {
             var pos = Utils.MouseInWorld();
-            Instantiate(debugSpawnPrefab, pos, Quaternion.identity);
+            var tileX = (int)pos.x;
+            var tileY = (int)pos.y;
+            
+            cableGrid.PlaceCable(tileX, tileY);
         }
 
         // Shoot

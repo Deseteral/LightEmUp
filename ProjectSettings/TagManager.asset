@@ -48,6 +48,9 @@ TagManager:
   - name: Tiles
     uniqueID: 945092885
     locked: 0
+  - name: Cables
+    uniqueID: 1090882209
+    locked: 0
   - name: Entities
     uniqueID: 1496542439
     locked: 0
