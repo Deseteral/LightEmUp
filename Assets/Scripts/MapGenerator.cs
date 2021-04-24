@@ -26,7 +26,7 @@ public class MapGenerator : MonoBehaviour {
             if (spawnX == -1 || spawnY == -1) continue;
             isValidMap = true;
             
-            GameObject.Find("Player").transform.position = new Vector3(spawnX, spawnY, 0);
+            GameObject.Find("Player").transform.position = new Vector3(spawnX + 0.5f, spawnY + 0.5f, 0);
         }
 
         ApplyMapToTilemap();

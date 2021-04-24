@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour {
         int tilemapAndPlayerMask = (1 << 7) | (1 << 8);
         RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer + 10f, tilemapAndPlayerMask);
 
-        return hit.collider != null && hit.collider.gameObject.name == "Player";
+        return hit.collider != null && hit.collider.gameObject.CompareTag("Player");
     }
 
     // private void DrawCircle(Vector2 centerPosition, float radius, Color color) {
