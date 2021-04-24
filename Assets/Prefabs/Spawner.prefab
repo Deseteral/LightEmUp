@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4556420125652007003, guid: d4b123d4236d641e08c138b9ffd0ee71, type: 3}
   maxChildren: 5
+  coinPrefab: {fileID: 2573629209362645227, guid: 241ddcaf5ee64408196e794f960aee19, type: 3}
 --- !u!114 &436761468757373561
 MonoBehaviour:
   m_ObjectHideFlags: 0

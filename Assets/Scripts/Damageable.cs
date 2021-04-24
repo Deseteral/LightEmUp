@@ -20,6 +20,9 @@ public class Damageable : MonoBehaviour {
             var enemy = GetComponent<Enemy>();
             if (enemy != null) enemy.OnDeath();
             
+            var enemySpawner = GetComponent<EnemySpawner>();
+            if (enemySpawner != null) enemySpawner.OnDeath();
+            
             Destroy(gameObject);
         }
 

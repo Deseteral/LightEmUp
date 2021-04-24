@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour {
     public GameObject enemyPrefab;
     public int maxChildren = 5;
+    public GameObject coinPrefab;
 
     private MapGenerator mapGenerator;
     private GameObject player;
@@ -54,5 +55,11 @@ public class EnemySpawner : MonoBehaviour {
 
     public void ChildrenDied() {
         aliveChildren--;
+    }
+
+    public void OnDeath() {
+        for (int i = 0; i < Random.Range(5, 10); i++) {
+            Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        }
     }
 }
