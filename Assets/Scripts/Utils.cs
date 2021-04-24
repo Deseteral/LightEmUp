@@ -24,8 +24,7 @@ namespace DefaultNamespace {
         public static (int, int) VectorToTilemapCoord(Vector2 vector) {
             return ((int)(vector.x - 0.5), (int)(vector.y - 0.5));
         }
-        
-        
+
         // private void DrawCircle(Vector2 centerPosition, float radius, Color color) {
         //     int segments = 10;
         //     float stepAmount = (2f * Mathf.PI) / segments;
