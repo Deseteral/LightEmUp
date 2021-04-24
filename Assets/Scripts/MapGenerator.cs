@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using DefaultNamespace;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
@@ -10,7 +12,9 @@ public class MapGenerator : MonoBehaviour {
     public Tile groundTile;
     public Tile wallTile;
     
-    public int size = 64;
+    public GameObject enemySpawner;
+    
+    public int size = 100;
 
     private bool[,] m;
 
@@ -29,7 +33,16 @@ public class MapGenerator : MonoBehaviour {
             GameObject.Find("Player").transform.position = new Vector3(spawnX + 0.5f, spawnY + 0.5f, 0);
         }
 
+        // Set tiles
         ApplyMapToTilemap();
+        
+        // Place spawners
+        var findEnemySpawnerPositions = FindEnemySpawnerPositions();
+        Debug.Log(findEnemySpawnerPositions.Count);
+        foreach (var (spawnerX, spawnerY) in findEnemySpawnerPositions) {
+            var spawnerPosition = new Vector3(spawnerX + 0.5f, spawnerY + 0.5f);
+            Instantiate(enemySpawner, spawnerPosition, Quaternion.identity);
+        }
     }
 
     private void CelluarAutomata() {
@@ -142,6 +155,44 @@ public class MapGenerator : MonoBehaviour {
         }
 
         return (-1, -1);
+    }
+
+    private List<(int, int)> FindEnemySpawnerPositions() {
+        List<(int, int)> floors = new List<(int, int)>();
+
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                if (m[x, y] == false) floors.Add((x, y));
+            }
+        }
+        
+        float percentOfSpawnerTiles = 5f / 100f;
+        int floorsToTake = (int) (floors.Count * percentOfSpawnerTiles);
+        floors.Shuffle();
+
+        return floors.Take(floorsToTake).ToList();
+        
+        
+        // List<(int, int)> positions = new List<(int, int)>();
+        // int oneSpawnerPerUnits = 10;
+        // int sectionCount = size / oneSpawnerPerUnits;
+        //
+        // for (int sectionY = 0; sectionY < sectionCount; sectionY++) {
+        //     for (int sectionX = 0; sectionX < sectionCount; sectionX++) {
+        //         int yStart = sectionY * oneSpawnerPerUnits;
+        //         int yEnd = sectionY * oneSpawnerPerUnits + oneSpawnerPerUnits;
+        //         int xStart = sectionX * oneSpawnerPerUnits;
+        //         int xEnd = sectionX * oneSpawnerPerUnits + oneSpawnerPerUnits;
+        //         
+        //         for (int y = yStart; y < sectionCount; sectionY++) {
+        //             for (int sectionX = 0; sectionX < sectionCount; sectionX++) {
+        //                 
+        //             }
+        //         }
+        //     }   
+        // }
+
+        // return positions;
     }
 
     private void ApplyMapToTilemap() {
