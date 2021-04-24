@@ -23,7 +23,7 @@ public class MapGenerator : MonoBehaviour {
 
         var (spawnX, spawnY) = FindSpawnPoint();
         GameObject.Find("Player").transform.position = new Vector3(spawnX, spawnY, 0);
-        
+
         ApplyMapToTilemap();
     }
 
@@ -133,7 +133,7 @@ public class MapGenerator : MonoBehaviour {
 
         while (true) {
             distance++;
-            if (m[distance, distance] == false) return (distance, distance);
+            if (m[distance, distance] == false) return (distance, distance); // TODO: IndexOutOfBounds
             if (m[distance, Size-1-distance] == false) return (distance, Size - 1 - distance);
             if (m[Size-1-distance, distance] == false) return (Size-1-distance, distance);
             if (m[Size-1-distance, Size-1-distance] == false) return (Size-1-distance, Size-1-distance);
