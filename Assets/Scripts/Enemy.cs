@@ -5,6 +5,8 @@ public class Enemy : MonoBehaviour {
     public float speed = 3f;
     public float attentionRadius = 5.5f;
 
+    public GameObject coinPrefab;
+
     private Vector2 delta = Vector2.zero;
     private Timer timer = new Timer();
 
@@ -22,7 +24,7 @@ public class Enemy : MonoBehaviour {
         Vector2 position = transform.position;
         Vector2 playerPosition = player.transform.position;
         float distanceToPlayer = Vector2.Distance(position, playerPosition);
-        
+
         if (distanceToPlayer > 15f) return; // Perf optimization
 
         Vector2 directionToPlayer = (playerPosition - position).normalized;
@@ -70,24 +72,9 @@ public class Enemy : MonoBehaviour {
 
     public void OnDeath() {
         parent.ChildrenDied();
-    }
 
-    // private void DrawCircle(Vector2 centerPosition, float radius, Color color) {
-    //     int segments = 10;
-    //     float stepAmount = (2f * Mathf.PI) / segments;
-    //
-    //     Vector3 prevPosition = Vector3.zero;
-    //     for (int step = 0; step < segments; step++) {
-    //         Vector2 offset = new Vector2(Mathf.Sin(step * stepAmount), Mathf.Cos(step * stepAmount));
-    //         Vector3 position = centerPosition + (offset * radius);
-    //         position.z = -10;
-    //
-    //         if (step == 0) {
-    //             prevPosition = position;
-    //         } else {
-    //             Debug.DrawLine(prevPosition, position, color, 0, false);
-    //             prevPosition = position;
-    //         }
-    //     }
-    // }
+        for (int i = 0; i < Random.Range(1, 5); i++) {
+            Instantiate(coinPrefab, transform.position, Quaternion.identity);
+        }
+    }
 }

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - Spawner
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - Player
   - Tilemap
   - Bullets
-  - Items
-  - 
+  - Spawners
+  - Coins
   - 
   - 
   - 

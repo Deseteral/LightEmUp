@@ -3,8 +3,6 @@ using UnityEngine;
 public class Bullet : MonoBehaviour {
     public Vector2 direction = Vector2.zero;
     public float speed = 0.25f;
-    
-    void Start() { }
 
     private void FixedUpdate() {
         var position = transform.position;
@@ -13,7 +11,8 @@ public class Bullet : MonoBehaviour {
     }
     
     private void OnCollisionEnter2D(Collision2D target) {
-        if (target.gameObject.name == "Walls") {
+        var targetObject = target.gameObject;
+        if (targetObject.name == "Walls" || targetObject.CompareTag("Spawner") || targetObject.CompareTag("Enemy")) {
             Destroy(gameObject);
         }
     }

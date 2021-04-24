@@ -1,3 +1,4 @@
+using System;
 using DefaultNamespace;
 using UnityEngine;
 
@@ -5,6 +6,7 @@ public class Player : MonoBehaviour {
     public float speed = 25f;
     public float recoilStrength = 1f;
     public int shootingDelayMs = 150;
+    public int coins = 0;
     public GameObject bulletPrefab;
 
     public GameObject debugSpawnPrefab; // TODO: DEBUG REMOVE
@@ -43,13 +45,17 @@ public class Player : MonoBehaviour {
             var mouseInWorld = Utils.MouseInWorld();
             Vector2 shootingDirection = (mouseInWorld - position).normalized;
             var bulletPosition = (Vector2) transform.position + shootingDirection;
-            
+
             GameObject bulletGameObject = Instantiate(bulletPrefab, bulletPosition, Quaternion.identity);
             bulletGameObject.GetComponent<Bullet>().direction = shootingDirection;
 
             rigidbody.AddForce(-shootingDirection * recoilStrength, ForceMode2D.Impulse);
-            
+
             shootingDelayTimer.Set(shootingDelayMs);
         }
+    }
+    
+    private void OnGUI() {
+        GUI.Label(new Rect(0, 0, 100, 50), coins.ToString());
     }
 }

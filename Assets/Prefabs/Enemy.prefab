@@ -147,6 +147,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   attentionRadius: 10
+  coinPrefab: {fileID: 2573629209362645227, guid: 241ddcaf5ee64408196e794f960aee19, type: 3}
 --- !u!114 &7154986641417448097
 MonoBehaviour:
   m_ObjectHideFlags: 0

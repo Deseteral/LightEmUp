@@ -24,5 +24,25 @@ namespace DefaultNamespace {
         public static (int, int) VectorToTilemapCoord(Vector2 vector) {
             return ((int)(vector.x - 0.5), (int)(vector.y - 0.5));
         }
+        
+        
+        // private void DrawCircle(Vector2 centerPosition, float radius, Color color) {
+        //     int segments = 10;
+        //     float stepAmount = (2f * Mathf.PI) / segments;
+        //
+        //     Vector3 prevPosition = Vector3.zero;
+        //     for (int step = 0; step < segments; step++) {
+        //         Vector2 offset = new Vector2(Mathf.Sin(step * stepAmount), Mathf.Cos(step * stepAmount));
+        //         Vector3 position = centerPosition + (offset * radius);
+        //         position.z = -10;
+        //
+        //         if (step == 0) {
+        //             prevPosition = position;
+        //         } else {
+        //             Debug.DrawLine(prevPosition, position, color, 0, false);
+        //             prevPosition = position;
+        //         }
+        //     }
+        // }
     }
 }
