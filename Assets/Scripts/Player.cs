@@ -58,9 +58,8 @@ public class Player : MonoBehaviour {
             Vector2 shootingDirection = (mouseInWorld - position).normalized;
             var bulletPosition = (Vector2) transform.position + shootingDirection;
 
-            GameObject bulletGameObject = Instantiate(bulletPrefab, bulletPosition, Quaternion.identity);
+            GameObject bulletGameObject = Instantiate(bulletPrefab, bulletPosition, Quaternion.identity, bulletsContainer.transform);
             bulletGameObject.GetComponent<Bullet>().direction = shootingDirection;
-            bulletGameObject.transform.parent = bulletsContainer.transform;
 
             rigidbody.AddForce(-shootingDirection * recoilStrength, ForceMode2D.Impulse);
 

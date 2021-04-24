@@ -77,8 +77,7 @@ public class Enemy : MonoBehaviour {
         parent.ChildrenDied();
 
         for (int i = 0; i < Random.Range(1, 5); i++) {
-            var coinsGameObject = Instantiate(coinPrefab, transform.position, Quaternion.identity);
-            coinsGameObject.transform.parent = coinsContainer.transform;
+            Instantiate(coinPrefab, transform.position, Quaternion.identity, coinsContainer.transform);
         }
     }
 }

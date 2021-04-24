@@ -55,9 +55,8 @@ public class MapGenerator : MonoBehaviour {
         var spawnersContainer = GameObject.Find("SpawnersContainer");
         foreach (var (spawnerX, spawnerY) in FindEnemySpawnerPositions()) {
             var spawnerPosition = new Vector3(spawnerX + 0.5f, spawnerY + 0.5f);
-            var spawnerGameObject = Instantiate(enemySpawner, spawnerPosition, Quaternion.identity);
-            spawnerGameObject.transform.parent = spawnersContainer.transform;
-            
+            Instantiate(enemySpawner, spawnerPosition, Quaternion.identity, spawnersContainer.transform);
+
             // TODO: Don't place if near player
         }
     }

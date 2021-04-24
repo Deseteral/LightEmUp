@@ -49,9 +49,8 @@ public class EnemySpawner : MonoBehaviour {
 
                 if (collisionMap[spawnX, spawnY]) continue; // Position occupied by tile, continue
 
-                var enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+                var enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, enemiesContainer.transform);
                 enemy.GetComponent<Enemy>().SetParent(this);
-                enemy.transform.parent = enemiesContainer.transform;
 
                 nextSpawnTimer.Set(Random.Range(NEXT_SPAWN_TIME_MIN_MS, NEXT_SPAWN_TIME_MAX_MS));
                 aliveChildren++;
@@ -66,8 +65,7 @@ public class EnemySpawner : MonoBehaviour {
 
     public void OnDeath() {
         for (int i = 0; i < Random.Range(5, 10); i++) {
-            var coinGameObject = Instantiate(coinPrefab, transform.position, Quaternion.identity);
-            coinGameObject.transform.parent = coinsContainer.transform;
+            Instantiate(coinPrefab, transform.position, Quaternion.identity, coinsContainer.transform);
         }
     }
 }
