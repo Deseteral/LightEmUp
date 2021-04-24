@@ -8,9 +8,15 @@ public class Bullet : MonoBehaviour {
     
     void Start() { }
 
-    void FixedUpdate() {
+    private void FixedUpdate() {
         var position = transform.position;
         position = position + ((Vector3)Direction * Speed);
         transform.position = position;
+    }
+    
+    private void OnCollisionEnter2D(Collision2D target) {
+        if (target.gameObject.name == "Walls") {
+            Destroy(gameObject);
+        }
     }
 }
