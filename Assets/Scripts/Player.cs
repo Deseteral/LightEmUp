@@ -1,19 +1,31 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour {
     public float Speed = 3f;
-    public GameObject enemyPrefab;
+    public float RecoilStrength = 1f;
+    public int ShootingDelayMs = 10;
+    public GameObject BulletPrefab;
+
+    public GameObject enemyPrefab; // TODO: DEBUG REMOVE
 
     private new Rigidbody2D rigidbody;
+    private Timer shootingDelayTimer = new Timer();
 
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
+        shootingDelayTimer.Set(0);
     }
 
-    void Update() {
+    private void Update() {
+        shootingDelayTimer.Update();
+    }
+
+    void FixedUpdate() {
         Vector2 delta = Vector2.zero;
         if (Input.GetKey(KeyCode.W)) delta.y += Speed;
         if (Input.GetKey(KeyCode.S)) delta.y -= Speed;
@@ -23,11 +35,25 @@ public class Player : MonoBehaviour {
         rigidbody.AddForce(delta, ForceMode2D.Force);
 
         // Debug spawn enemy
-        if (Input.GetMouseButtonDown(0)) {
-            var v3 = Input.mousePosition;
-            v3.z = 10.0f;
-            v3 = Camera.main.ScreenToWorldPoint(v3);
-            Object.Instantiate(enemyPrefab, v3, Quaternion.identity);
+        // TODO: DEBUG REMOVE
+        if (Input.GetMouseButtonDown(1)) {
+            var pos = Utils.MouseInWorld();
+            Instantiate(enemyPrefab, pos, Quaternion.identity);
+        }
+
+        // Shoot
+        if (Input.GetMouseButton(0) && shootingDelayTimer.Check()) {
+            var position = transform.position;
+            var mouseInWorld = Utils.MouseInWorld();
+            Vector2 shootingDirection = (mouseInWorld - position).normalized;
+            var bulletPosition = (Vector2) transform.position + shootingDirection;
+            
+            GameObject bulletGameObject = Instantiate(BulletPrefab, bulletPosition, Quaternion.identity);
+            bulletGameObject.GetComponent<Bullet>().Direction = shootingDirection;
+
+            rigidbody.AddForce(-shootingDirection * RecoilStrength, ForceMode2D.Impulse);
+            
+            shootingDelayTimer.Set(ShootingDelayMs);
         }
     }
 }

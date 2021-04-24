@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour {
         timer.Set(0);
     }
 
-    private void Update() {
+    private void FixedUpdate() {
         Vector2 position = transform.position;
         Vector2 playerPosition = player.transform.position;
         float distanceToPlayer = Vector2.Distance(position, playerPosition);
@@ -64,22 +64,22 @@ public class Enemy : MonoBehaviour {
         return hit.collider != null && hit.collider.gameObject.name == "Player";
     }
 
-    private void DrawCircle(Vector2 centerPosition, float radius, Color color) {
-        int segments = 10;
-        float stepAmount = (2f * Mathf.PI) / segments;
-
-        Vector3 prevPosition = Vector3.zero;
-        for (int step = 0; step < segments; step++) {
-            Vector2 offset = new Vector2(Mathf.Sin(step * stepAmount), Mathf.Cos(step * stepAmount));
-            Vector3 position = centerPosition + (offset * radius);
-            position.z = -10;
-
-            if (step == 0) {
-                prevPosition = position;
-            } else {
-                Debug.DrawLine(prevPosition, position, color, 0, false);
-                prevPosition = position;
-            }
-        }
-    }
+    // private void DrawCircle(Vector2 centerPosition, float radius, Color color) {
+    //     int segments = 10;
+    //     float stepAmount = (2f * Mathf.PI) / segments;
+    //
+    //     Vector3 prevPosition = Vector3.zero;
+    //     for (int step = 0; step < segments; step++) {
+    //         Vector2 offset = new Vector2(Mathf.Sin(step * stepAmount), Mathf.Cos(step * stepAmount));
+    //         Vector3 position = centerPosition + (offset * radius);
+    //         position.z = -10;
+    //
+    //         if (step == 0) {
+    //             prevPosition = position;
+    //         } else {
+    //             Debug.DrawLine(prevPosition, position, color, 0, false);
+    //             prevPosition = position;
+    //         }
+    //     }
+    // }
 }

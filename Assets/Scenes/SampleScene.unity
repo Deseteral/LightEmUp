@@ -627,6 +627,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 25
+  ShootingDelayMs: 250
+  BulletPrefab: {fileID: 1227194870020073082, guid: 3921145b452f94c0a8cbbb81fec4da71, type: 3}
   enemyPrefab: {fileID: 4556420125652007003, guid: d4b123d4236d641e08c138b9ffd0ee71, type: 3}
 --- !u!212 &1154982351
 SpriteRenderer:
