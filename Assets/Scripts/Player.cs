@@ -7,7 +7,9 @@ public class Player : MonoBehaviour {
     public float recoilStrength = 1f;
     public int shootingDelayMs = 150;
     public int coins = 0;
+    
     public GameObject bulletPrefab;
+    public GameObject lampPrefab;
 
     private new Rigidbody2D rigidbody;
     private Timer shootingDelayTimer = new Timer();
@@ -27,6 +29,8 @@ public class Player : MonoBehaviour {
 
     void FixedUpdate() {
         var mouseInWorld = Utils.MouseInWorld();
+        var tileX = (int)mouseInWorld.x;
+        var tileY = (int)mouseInWorld.y;
         
         Vector2 delta = Vector2.zero;
         if (Input.GetKey(KeyCode.W)) delta.y += speed;
@@ -38,18 +42,18 @@ public class Player : MonoBehaviour {
 
         // Place cable
         if (Input.GetMouseButton(1)) {
-            var tileX = (int)mouseInWorld.x;
-            var tileY = (int)mouseInWorld.y;
-            
             cableGrid.PlaceCable(tileX, tileY);
         }
         
         // Remove cable
         if (Input.GetKeyDown(KeyCode.R)) {
-            var tileX = (int)mouseInWorld.x;
-            var tileY = (int)mouseInWorld.y;
-            
             cableGrid.RemoveCable(tileX, tileY);
+        }
+        
+        // Place lamp
+        if (Input.GetKeyDown(KeyCode.Q)) {
+            Vector3 pos = new Vector3(tileX + 0.5f, tileY + 0.5f, 0);
+            Instantiate(lampPrefab, pos, Quaternion.identity);
         }
 
         // Shoot

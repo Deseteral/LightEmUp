@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DefaultNamespace;
 using UnityEngine;
 
 public class CableGrid : MonoBehaviour {
@@ -106,5 +107,10 @@ public class CableGrid : MonoBehaviour {
         foreach (var coord in cablePositions) {
             cableTiles[coord].hasPower = false;
         }
+    }
+
+    public bool IsTilePowered(int x, int y) {
+        var cableTile = cableTiles.GetOrDefault((x, y), null);
+        return cableTile != null ? cableTile.hasPower : false;
     }
 }

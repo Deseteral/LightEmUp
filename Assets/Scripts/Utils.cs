@@ -22,7 +22,12 @@ namespace DefaultNamespace {
         }
 
         public static (int, int) VectorToTilemapCoord(Vector2 vector) {
-            return ((int)(vector.x - 0.5), (int)(vector.y - 0.5));
+            return ((int) (vector.x - 0.5), (int) (vector.y - 0.5));
+        }
+
+        public static TV GetOrDefault<TK, TV>(this IDictionary<TK, TV> dict, TK key, TV defaultValue = default(TV)) {
+            TV value;
+            return dict.TryGetValue(key, out value) ? value : defaultValue;
         }
 
         // private void DrawCircle(Vector2 centerPosition, float radius, Color color) {
