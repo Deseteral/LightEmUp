@@ -13,9 +13,11 @@ public class Player : MonoBehaviour {
 
     private new Rigidbody2D rigidbody;
     private Timer shootingDelayTimer = new Timer();
+    private GameObject bulletsContainer;
 
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
+        bulletsContainer = GameObject.Find("BulletsContainer");
         shootingDelayTimer.Set(0);
     }
 
@@ -48,6 +50,7 @@ public class Player : MonoBehaviour {
 
             GameObject bulletGameObject = Instantiate(bulletPrefab, bulletPosition, Quaternion.identity);
             bulletGameObject.GetComponent<Bullet>().direction = shootingDirection;
+            bulletGameObject.transform.parent = bulletsContainer.transform;
 
             rigidbody.AddForce(-shootingDirection * recoilStrength, ForceMode2D.Impulse);
 

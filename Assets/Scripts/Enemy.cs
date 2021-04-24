@@ -13,10 +13,13 @@ public class Enemy : MonoBehaviour {
     private new Rigidbody2D rigidbody;
     private GameObject player;
     private EnemySpawner parent;
+    private GameObject coinsContainer;
 
     private void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player");
+        coinsContainer = GameObject.Find("CoinsContainer");
+        
         timer.Set(0);
     }
 
@@ -74,7 +77,8 @@ public class Enemy : MonoBehaviour {
         parent.ChildrenDied();
 
         for (int i = 0; i < Random.Range(1, 5); i++) {
-            Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            var coinsGameObject = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+            coinsGameObject.transform.parent = coinsContainer.transform;
         }
     }
 }

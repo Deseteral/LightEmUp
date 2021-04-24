@@ -37,9 +37,11 @@ public class MapGenerator : MonoBehaviour {
         ApplyMapToTilemap();
         
         // Place spawners
+        var spawnersContainer = GameObject.Find("SpawnersContainer");
         foreach (var (spawnerX, spawnerY) in FindEnemySpawnerPositions()) {
             var spawnerPosition = new Vector3(spawnerX + 0.5f, spawnerY + 0.5f);
-            Instantiate(enemySpawner, spawnerPosition, Quaternion.identity);
+            var spawnerGameObject = Instantiate(enemySpawner, spawnerPosition, Quaternion.identity);
+            spawnerGameObject.transform.parent = spawnersContainer.transform;
         }
     }
 
