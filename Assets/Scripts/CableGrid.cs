@@ -49,6 +49,8 @@ public class CableGrid : MonoBehaviour {
 
             if (nx < 0 || ny < 0 || nx >= mapGenerator.size || ny >= mapGenerator.size) {
                 neighbours.Add(false);
+            } else if (mapGenerator.generatorCoords.Item1 == nx && mapGenerator.generatorCoords.Item2 == ny) {
+                neighbours.Add(true);
             } else {
                 neighbours.Add(map[nx, ny]);
             }

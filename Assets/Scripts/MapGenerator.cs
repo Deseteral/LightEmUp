@@ -15,9 +15,12 @@ public class MapGenerator : MonoBehaviour {
     public GameObject enemySpawner;
     
     public int size = 50;
+    public (int, int) generatorCoords;
 
     private bool[,] m;
 
+    private readonly List<(int, int)> DIRECTIONS = new List<(int, int)> {(0, 1), (1, 0), (0, -1), (-1, 0)};
+    
     void Start() {
         bool isValidMap = false;
 
@@ -30,7 +33,19 @@ public class MapGenerator : MonoBehaviour {
             if (spawnX == -1 || spawnY == -1) continue;
             isValidMap = true;
             
+            // Set player position
             GameObject.Find("Player").transform.position = new Vector3(spawnX + 0.5f, spawnY + 0.5f, 0);
+            
+            // Place generator
+            foreach (var (dx, dy) in DIRECTIONS) {
+                int nx = dx + spawnX;
+                int ny = dy + spawnY;
+                if (m[nx, ny] == false) {
+                    GameObject.Find("Generator").transform.position = new Vector3(nx + 0.5f, ny + 0.5f, 0);
+                    generatorCoords = (nx, ny);
+                    break;
+                }
+            }
         }
 
         // Set tiles
@@ -42,6 +57,8 @@ public class MapGenerator : MonoBehaviour {
             var spawnerPosition = new Vector3(spawnerX + 0.5f, spawnerY + 0.5f);
             var spawnerGameObject = Instantiate(enemySpawner, spawnerPosition, Quaternion.identity);
             spawnerGameObject.transform.parent = spawnersContainer.transform;
+            
+            // TODO: Don't place if near player
         }
     }
 
