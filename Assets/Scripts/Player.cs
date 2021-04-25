@@ -17,6 +17,9 @@ public class Player : MonoBehaviour {
     private GameMaster gameMaster;
     private SpriteRenderer spriteRenderer;
 
+    private Timer scrollTimer = new Timer();
+    private int selectedTool = 0;
+
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
         tool = GetComponent<Tool>();
@@ -24,9 +27,12 @@ public class Player : MonoBehaviour {
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        scrollTimer.Set(0);
     }
 
     void FixedUpdate() {
+        scrollTimer.Update();
+        
         var position = transform.position;
         var mouseInWorld = Utils.MouseInWorld();
 
@@ -62,10 +68,25 @@ public class Player : MonoBehaviour {
         }
 
         // Change tool type
-        if (Input.GetKey(KeyCode.Alpha1)) tool.toolType = ToolType.Gun;
-        if (Input.GetKey(KeyCode.Alpha2)) tool.toolType = ToolType.PlaceCable;
-        if (Input.GetKey(KeyCode.Alpha3)) tool.toolType = ToolType.PlaceLamp;
-        if (Input.GetKey(KeyCode.Alpha4)) tool.toolType = ToolType.PlaceTurret;
+        if (Input.GetKey(KeyCode.Alpha1)) selectedTool = 0;
+        if (Input.GetKey(KeyCode.Alpha2)) selectedTool = 1;
+        if (Input.GetKey(KeyCode.Alpha3)) selectedTool = 2;
+        if (Input.GetKey(KeyCode.Alpha4)) selectedTool = 3;
+
+        var scrollAmount = Input.mouseScrollDelta.y;
+        if (scrollAmount != 0 && scrollTimer.Check()) {
+            if (scrollAmount > 0) {
+                selectedTool += 1;
+            } else if (scrollAmount < -0) {
+                selectedTool -= 1;
+            }
+            scrollTimer.Set(250);
+        }
+
+        if (selectedTool < 0) selectedTool = 3;
+        if (selectedTool > 3) selectedTool = 0;
+        
+        tool.toolType = (ToolType) selectedTool;
 
         // Rotate sprite
         {
