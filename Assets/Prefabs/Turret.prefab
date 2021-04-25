@@ -122,5 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f671b405f05ac400d890ea98bcdc7d34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spread: 10
   shootingDelayMs: 150
+  toolType: 0
   bulletPrefab: {fileID: 1227194870020073082, guid: 3921145b452f94c0a8cbbb81fec4da71, type: 3}
+  lampPrefab: {fileID: 5823411731205462583, guid: e507ada748e6442a1a7d41748e680ae2, type: 3}
+  turretPrefab: {fileID: 8778132382267877048}

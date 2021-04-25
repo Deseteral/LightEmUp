@@ -48,10 +48,10 @@ public class CableGrid : MonoBehaviour {
         }
     }
 
-    public void PlaceCable(int x, int y) {
+    public bool PlaceCable(int x, int y) {
         // Check if cable can be placed
         var (generatorX, generatorY) = mapGenerator.generatorCoords;
-        if (x < 0 || y < 0 || x >= mapGenerator.size || y >= mapGenerator.size || mapGenerator.GetCollisonMap()[x, y] || (generatorX == x && generatorY == y) || map[x, y]) return;
+        if (x < 0 || y < 0 || x >= mapGenerator.size || y >= mapGenerator.size || mapGenerator.GetCollisonMap()[x, y] || (generatorX == x && generatorY == y) || map[x, y]) return false;
 
         // Create CableTile game object
         var cableTilePosition = new Vector3(x + 0.5f, y + 0.5f, 0);
@@ -64,12 +64,13 @@ public class CableGrid : MonoBehaviour {
         map[x, y] = true;
 
         RegenerateEverything();
+        return true;
     }
 
-    public void RemoveCable(int x, int y) {
+    public bool RemoveCable(int x, int y) {
         // Check if there is cable to be removed
         var coord = (x, y);
-        if (cableTiles.Keys.Contains(coord) == false) return;
+        if (cableTiles.Keys.Contains(coord) == false) return false;
 
         // Destroy game object and update maps
         Destroy(cableTiles[coord].gameObject);
@@ -77,6 +78,7 @@ public class CableGrid : MonoBehaviour {
         map[x, y] = false;
 
         RegenerateEverything();
+        return true;
     }
 
     public void RegenerateEverything() {

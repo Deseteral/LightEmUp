@@ -3,12 +3,13 @@ using UnityEngine;
 public class Turret : MonoBehaviour {
     private ElectricalDevice electricalDevice;
     private AudioManager audioManager;
-    private Gun gun;
+    private Tool tool;
 
     private void Start() {
         electricalDevice = GetComponent<ElectricalDevice>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        gun = GetComponent<Gun>();
+        tool = GetComponent<Tool>();
+        tool.toolType = ToolType.Gun;
     }
 
     private void Update() {
@@ -35,7 +36,7 @@ public class Turret : MonoBehaviour {
         }
 
         if (shootingDirection != Vector2.zero) {
-            bool didShoot = gun.Shoot(shootingDirection);
+            bool didShoot = tool.Use(shootingDirection);
             if (didShoot) {
                 audioManager.PlayShootingGunSound(transform.position);
             }
