@@ -4,10 +4,10 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 public enum ToolType {
-    Gun,
-    PlaceCable,
-    PlaceLamp,
-    PlaceTurret,
+    Gun = 0,
+    PlaceCable = 1,
+    PlaceLamp = 2,
+    PlaceTurret = 3,
 }
 
 public class Tool : MonoBehaviour {
@@ -92,7 +92,7 @@ public class Tool : MonoBehaviour {
 
         return false;
     }
-    
+
     private bool PlaceLamp(Vector2 position) {
         return PlaceDevice(position, lampPrefab);
     }
@@ -106,13 +106,13 @@ public class Tool : MonoBehaviour {
         var coord = ((int) tilePosition.x, (int) tilePosition.y);
 
         // Try remove device
-        var device = devicesMap.GetOrDefault(coord, null); 
+        var device = devicesMap.GetOrDefault(coord, null);
         if (device != null) {
             devicesMap.Remove(coord);
             Destroy(device.gameObject);
             return true;
         }
-        
+
         // Try remove cable
         return cableGrid.RemoveCable((int) tilePosition.x, (int) tilePosition.y);
     }
