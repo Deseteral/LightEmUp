@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: 1496542439
   m_SortingLayer: 3
   m_SortingOrder: 0
-  m_Sprite: {fileID: 3625043607559282579, guid: 045b15ec09bba42448d89db77fa6f20a, type: 3}
-  m_Color: {r: 1, g: 0.91909254, b: 0, a: 1}
+  m_Sprite: {fileID: 4145382706316886449, guid: 34c8fdb2a01c94ff1a8bdaeb8fac5e37, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 0.5}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -102,8 +102,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 0.5}
-    newSize: {x: 1, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -136,4 +136,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a28ae47d60e75426886273c41d01d124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shadowTile: {fileID: 11400000, guid: 3b54d7f9a5359479bb30a77d0d6fc2a9, type: 2}
+  lampOnSprite: {fileID: 2599969905456701152, guid: 34c8fdb2a01c94ff1a8bdaeb8fac5e37, type: 3}
+  lampOffSprite: {fileID: 4145382706316886449, guid: 34c8fdb2a01c94ff1a8bdaeb8fac5e37, type: 3}

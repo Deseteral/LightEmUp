@@ -1,13 +1,25 @@
 using UnityEngine;
 
+public enum Direction {
+    Front, Back, Left, Right,
+}
+
 public class Turret : MonoBehaviour {
+    public Sprite frontSprite;
+    public Sprite backSprite;
+    public Sprite leftSprite;
+    public Sprite rightSprite;
+    
     private ElectricalDevice electricalDevice;
     private AudioManager audioManager;
     private Tool tool;
-
+    private Direction targetingDirection = Direction.Front;
+    private SpriteRenderer spriteRenderer;
+    
     private void Start() {
         electricalDevice = GetComponent<ElectricalDevice>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         tool = GetComponent<Tool>();
         tool.toolType = ToolType.Gun;
     }
@@ -40,6 +52,27 @@ public class Turret : MonoBehaviour {
             if (didShoot) {
                 audioManager.PlayShootingGunSound(transform.position);
             }
+
+            if (Mathf.Abs(shootingDirection.x) > Mathf.Abs(shootingDirection.y)) {
+                if (shootingDirection.x > 0) {
+                    targetingDirection = Direction.Right;
+                } else {
+                    targetingDirection = Direction.Left;
+                }
+            } else {
+                if (shootingDirection.y > 0) {
+                    targetingDirection = Direction.Back;
+                } else {
+                    targetingDirection = Direction.Front;
+                }
+            }
+        }
+
+        switch (targetingDirection) {
+            case Direction.Back: spriteRenderer.sprite = backSprite; break;
+            case Direction.Front: spriteRenderer.sprite = frontSprite; break;
+            case Direction.Left: spriteRenderer.sprite = leftSprite; break;
+            case Direction.Right: spriteRenderer.sprite = rightSprite; break;
         }
     }
     

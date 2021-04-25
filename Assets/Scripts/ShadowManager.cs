@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class ShadowManager : MonoBehaviour {
-    public Tile shadowTile;
+    private Tile shadowTile;
 
     private Tilemap wallsTilemap;
     private Tilemap shadowTilemap;
@@ -19,6 +19,7 @@ public class ShadowManager : MonoBehaviour {
         wallsTilemap = GameObject.Find("Walls").GetComponent<Tilemap>();
         shadowTilemap = GameObject.Find("Shadow").GetComponent<Tilemap>();
         mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
+        shadowTile = mapGenerator.shadowTile;
 
         if (EVERY_SHADOW_POSITION == null || EVERY_SHADOW_TILE == null) {
             EVERY_SHADOW_POSITION = new Vector3Int[mapGenerator.size * mapGenerator.size + mapGenerator.size];

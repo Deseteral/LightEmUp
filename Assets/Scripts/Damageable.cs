@@ -31,7 +31,7 @@ public class Damageable : MonoBehaviour {
         }
 
         if (blink) {
-            spriteRenderer.color = Color.white;
+            spriteRenderer.color = Color.red;
             blink = false;
         } else {
             spriteRenderer.color = originalColor;

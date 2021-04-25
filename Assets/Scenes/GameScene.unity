@@ -477,7 +477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AssetsPPU: 48
+  m_AssetsPPU: 64
   m_RefResolutionX: 1280
   m_RefResolutionY: 720
   m_UpscaleRT: 0
@@ -1600,10 +1600,19 @@ MonoBehaviour:
   walls: {fileID: 744577324}
   wallTops: {fileID: 786605525}
   shadow: {fileID: 976914916}
-  groundTile: {fileID: 11400000, guid: dd007d35597034123b116dfe5938c629, type: 2}
-  wallTile: {fileID: 11400000, guid: d8cc541ce491c4056b3a67d5e10685c0, type: 2}
-  wallTopTile: {fileID: 11400000, guid: 5c28104046a714e468f4d2babd3e20b5, type: 2}
-  shadowTile: {fileID: 11400000, guid: 3b54d7f9a5359479bb30a77d0d6fc2a9, type: 2}
+  groundTiles:
+  - {fileID: 11400000, guid: 83a3fc7c9d0eb43c9922612a49579dfc, type: 2}
+  - {fileID: 11400000, guid: 57a2ea587c97040929f8389e3dab724e, type: 2}
+  - {fileID: 11400000, guid: fba35f4a079c648e1819b1afd59a08d0, type: 2}
+  - {fileID: 11400000, guid: addae72a6ae8c446daaa93312e11d5aa, type: 2}
+  - {fileID: 11400000, guid: 84578e88720254468a953a87256dd627, type: 2}
+  wallTiles:
+  - {fileID: 11400000, guid: 60b4c2c20225e48ee9e2ad1ca0d2c6ab, type: 2}
+  - {fileID: 11400000, guid: ebacfa88b1d2a4162872ee623fd26b1f, type: 2}
+  - {fileID: 11400000, guid: 644656b3f086e406cbac67df8fa0c722, type: 2}
+  - {fileID: 11400000, guid: 1341315d5cb664d73af8d82666385c5e, type: 2}
+  wallTopTile: {fileID: 11400000, guid: 027b0efbf3bce4ffd87ae6ea74e7bbf3, type: 2}
+  shadowTile: {fileID: 11400000, guid: 7d7421e3629f0407f97f640add8f7ebf, type: 2}
   enemySpawner: {fileID: 8204885434059153406, guid: 016f11b554c02402b9c2fd03e8434492, type: 3}
   size: 50
 --- !u!4 &1236830760
@@ -1663,7 +1672,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a029da42523b4927b2fcbd6f1fb2795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shadowTile: {fileID: 11400000, guid: 3b54d7f9a5359479bb30a77d0d6fc2a9, type: 2}
 --- !u!1 &1801229043
 GameObject:
   m_ObjectHideFlags: 0

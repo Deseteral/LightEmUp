@@ -1,11 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class Lamp : MonoBehaviour {
-    private static readonly Color ENABLED_COLOR = Color.yellow;
-    private static readonly Color DISABLED_COLOR = Color.gray;
+    public Sprite lampOnSprite;
+    public Sprite lampOffSprite;
 
     private static List<(int, int)> LIGHT_MASK = null;
 
@@ -65,7 +63,11 @@ public class Lamp : MonoBehaviour {
 
     private void FixedUpdate() {
         var currentHasPower = electricalDevice.hasPower; // TODO: POTENTIAL PREF PROBLEM
-        spriteRenderer.color = currentHasPower ? ENABLED_COLOR : DISABLED_COLOR;
+        if (currentHasPower) {
+            spriteRenderer.sprite = lampOnSprite;   
+        } else {
+            spriteRenderer.sprite = lampOffSprite;
+        }
     }
 
     private Vector3Int[] RegenerateLightTiles() {

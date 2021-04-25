@@ -11,8 +11,8 @@ public class MapGenerator : MonoBehaviour {
     public Tilemap wallTops;
     public Tilemap shadow;
 
-    public Tile groundTile;
-    public Tile wallTile;
+    public Tile[] groundTiles;
+    public Tile[] wallTiles;
     public Tile wallTopTile;
     public Tile shadowTile;
 
@@ -294,7 +294,13 @@ public class MapGenerator : MonoBehaviour {
     private void ApplyMapToTilemap() {
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
-                ground.SetTile(new Vector3Int(x, y, 0), groundTile);
+                int idx;
+                if (Random.Range(0f, 1f) < 0.5f) {
+                    idx = 0;
+                } else {
+                    idx = Random.Range(0, groundTiles.Length);
+                }
+                ground.SetTile(new Vector3Int(x, y, 0), groundTiles[idx]);
             }
         }
 
@@ -302,7 +308,7 @@ public class MapGenerator : MonoBehaviour {
             for (int x = 0; x < size; x++) {
                 if (m[x, y]) {
                     var pos = new Vector3Int(x, y, 0);
-                    walls.SetTile(pos, wallTile);
+                    walls.SetTile(pos, wallTiles[Random.Range(0, wallTiles.Length)]);
                     wallTops.SetTile(pos, wallTopTile);
                 }
             }
