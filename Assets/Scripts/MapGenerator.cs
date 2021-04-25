@@ -13,33 +13,35 @@ public class MapGenerator : MonoBehaviour {
     public Tile groundTile;
     public Tile wallTile;
     public Tile shadowTile;
-    
+
     public GameObject enemySpawner;
-    
+
     public int size = 50;
     public (int, int) generatorCoords;
 
     private bool[,] m;
 
     private readonly List<(int, int)> DIRECTIONS = new List<(int, int)> {(0, 1), (1, 0), (0, -1), (-1, 0)};
-    
+
     void Start() {
         bool isValidMap = false;
         Vector3 playerPosition = Vector3.zero;
-        
+
+        int attempts = 0;
         while (!isValidMap) {
             CelluarAutomata();
             RemoveClosedRooms();
+            attempts++;
 
             var (spawnX, spawnY) = FindSpawnPoint();
 
             if (spawnX == -1 || spawnY == -1) continue;
             isValidMap = true;
-            
+
             // Set player position
-            playerPosition =  new Vector3(spawnX + 0.5f, spawnY + 0.5f, 0);
+            playerPosition = new Vector3(spawnX + 0.5f, spawnY + 0.5f, 0);
             GameObject.Find("Player").transform.position = playerPosition;
-            
+
             // Place generator
             foreach (var (dx, dy) in DIRECTIONS) {
                 int nx = dx + spawnX;
@@ -52,17 +54,19 @@ public class MapGenerator : MonoBehaviour {
             }
         }
 
+        Debug.Log($"Map generation attempts: {attempts}");
+
         // Set tiles
         ApplyMapToTilemap();
-        
+
         // Place spawners
         var spawnersContainer = GameObject.Find("SpawnersContainer");
         foreach (var (spawnerX, spawnerY) in FindEnemySpawnerPositions()) {
             var spawnerPosition = new Vector3(spawnerX + 0.5f, spawnerY + 0.5f);
-            
+
             // Skip spawner if it is near the player spawn point
             if (Vector3.Distance(playerPosition, spawnerPosition) < 10f) continue;
-            
+
             Instantiate(enemySpawner, spawnerPosition, Quaternion.identity, spawnersContainer.transform);
         }
     }
@@ -100,7 +104,7 @@ public class MapGenerator : MonoBehaviour {
 
             m = newMap;
         }
-        
+
         // Make enclosing walls
         for (int x = 0; x < size; x++) {
             m[x, 0] = true; // top
@@ -111,7 +115,6 @@ public class MapGenerator : MonoBehaviour {
             m[0, y] = true; // left
             m[size - 1, y] = true; // right
         }
-        
     }
 
     private int CountNeighbours(int x, int y) {
@@ -137,19 +140,19 @@ public class MapGenerator : MonoBehaviour {
 
         floodMap[size / 2, size / 2] = true;
         queue.Add((size / 2, size / 2));
-        
+
         // Mark neighbours
         while (queue.Count > 0) {
             var (x, y) = queue[0];
             queue.RemoveAt(0);
-            
+
             foreach (int i in new List<int> {-1, 0, 1}) {
                 foreach (int j in new List<int> {-1, 0, 1}) {
                     if (i != 0 && j != 0) continue;
 
                     int nx = x + i;
                     int ny = y + j;
-                    
+
                     if (
                         (nx >= 0 && ny >= 0 && nx < size && ny < size) &&
                         (m[nx, ny] == false && floodMap[nx, ny] == false)
@@ -169,11 +172,13 @@ public class MapGenerator : MonoBehaviour {
     }
 
     private (int, int) FindSpawnPoint() {
-        for (int distance = 0; distance < (size/2); distance++) {
-            if (m[distance, distance] == false) return (distance, distance);
-            if (m[distance, size-1-distance] == false) return (distance, size - 1 - distance);
-            if (m[size-1-distance, distance] == false) return (size-1-distance, distance);
-            if (m[size-1-distance, size-1-distance] == false) return (size-1-distance, size-1-distance);
+        for (int y = 1; y < (size / 2); y++) {
+            for (int distance = 1; distance < (size / 2); distance++) {
+                if (m[distance, y] == false) return (distance, y);
+                if (m[size - distance - 1, y] == false) return (size - distance - 1, y);
+                if (m[distance, size - y - 1] == false) return (distance, size - y - 1);
+                if (m[size - distance - 1, size - y - 1] == false) return (size - distance - 1, size - y - 1);
+            }
         }
 
         return (-1, -1);
@@ -187,14 +192,14 @@ public class MapGenerator : MonoBehaviour {
                 if (m[x, y] == false) floors.Add((x, y));
             }
         }
-        
+
         float percentOfSpawnerTiles = 2f / 100f;
         int floorsToTake = (int) (floors.Count * percentOfSpawnerTiles);
         floors.Shuffle();
 
         return floors.Take(floorsToTake).ToList();
-        
-        
+
+
         // List<(int, int)> positions = new List<(int, int)>();
         // int oneSpawnerPerUnits = 10;
         // int sectionCount = size / oneSpawnerPerUnits;
