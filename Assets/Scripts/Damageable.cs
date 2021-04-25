@@ -12,12 +12,16 @@ public class Damageable : MonoBehaviour {
 
     private Enemy enemy;
     private EnemySpawner enemySpawner;
+    private Player player;
+    private GameMaster gameMaster;
 
     void Start() {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
         enemy = GetComponent<Enemy>();
         enemySpawner = GetComponent<EnemySpawner>();
+        player = GetComponent<Player>();
+        gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
 
         originalColor = spriteRenderer.color;
     }
@@ -27,7 +31,11 @@ public class Damageable : MonoBehaviour {
             if (enemy != null) enemy.OnDeath();
             if (enemySpawner != null) enemySpawner.OnDeath();
 
-            Destroy(gameObject);
+            if (player != null) {
+                gameMaster.GameOver();
+            } else {
+                Destroy(gameObject);   
+            }
         }
 
         if (blink) {
