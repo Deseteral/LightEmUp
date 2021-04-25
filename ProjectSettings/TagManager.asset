@@ -56,6 +56,9 @@ TagManager:
   - name: Entities
     uniqueID: 1496542439
     locked: 0
+  - name: WallTops
+    uniqueID: 3917258565
+    locked: 0
   - name: UI
     uniqueID: 1521469663
     locked: 0

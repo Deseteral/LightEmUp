@@ -10,7 +10,7 @@ public class ShadowManager : MonoBehaviour {
     private Tilemap shadowTilemap;
     private MapGenerator mapGenerator;
 
-    private static Vector3Int[] EVERY_POSITION = null;
+    private static Vector3Int[] EVERY_SHADOW_POSITION = null;
     private static TileBase[] EVERY_SHADOW_TILE = null;
 
     private readonly List<(int, int)> DIRECTIONS = new List<(int, int)> {(0, 1), (1, 0), (0, -1), (-1, 0)};
@@ -20,22 +20,22 @@ public class ShadowManager : MonoBehaviour {
         shadowTilemap = GameObject.Find("Shadow").GetComponent<Tilemap>();
         mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
 
-        if (EVERY_POSITION == null || EVERY_SHADOW_TILE == null) {
-            EVERY_POSITION = new Vector3Int[mapGenerator.size * mapGenerator.size];
-            for (int y = 0; y < mapGenerator.size; y++) {
+        if (EVERY_SHADOW_POSITION == null || EVERY_SHADOW_TILE == null) {
+            EVERY_SHADOW_POSITION = new Vector3Int[mapGenerator.size * mapGenerator.size + mapGenerator.size];
+            for (int y = 0; y < mapGenerator.size + 1; y++) {
                 for (int x = 0; x < mapGenerator.size; x++) {
                     int idx = x + y * mapGenerator.size;
-                    EVERY_POSITION[idx] = new Vector3Int(x, y, 0);
+                    EVERY_SHADOW_POSITION[idx] = new Vector3Int(x, y, 0);
                 }
             }
 
-            EVERY_SHADOW_TILE = Enumerable.Repeat<TileBase>(shadowTile, EVERY_POSITION.Length).ToArray();
+            EVERY_SHADOW_TILE = Enumerable.Repeat<TileBase>(shadowTile, EVERY_SHADOW_POSITION.Length).ToArray();
         }
     }
 
     public void RegenerateShadowMap() {
         // Shadow everything
-        shadowTilemap.SetTiles(EVERY_POSITION, EVERY_SHADOW_TILE);
+        shadowTilemap.SetTiles(EVERY_SHADOW_POSITION, EVERY_SHADOW_TILE);
 
         // Only set light tiles
         IEnumerable<Vector3Int> positions = new List<Vector3Int>();
