@@ -18,12 +18,14 @@ public class Tool : MonoBehaviour {
     public GameObject bulletPrefab;
     public GameObject lampPrefab;
     public GameObject turretPrefab;
+    public GameObject coinPrefab;
 
     private MapGenerator mapGenerator;
     private CableGrid cableGrid;
 
     private GameObject bulletsContainer;
     private GameObject devicesContainer;
+    private GameObject coinsContainer;
 
     private GameMaster gameMaster;
 
@@ -36,6 +38,7 @@ public class Tool : MonoBehaviour {
         mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
         bulletsContainer = GameObject.Find("BulletsContainer");
         devicesContainer = GameObject.Find("DevicesContainer");
+        coinsContainer = GameObject.Find("CoinsContainer");
         gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
 
         devicesMap = new Dictionary<(int, int), GameObject>();
@@ -124,8 +127,14 @@ public class Tool : MonoBehaviour {
         // Try remove device
         var device = devicesMap.GetOrDefault(coord, null);
         if (device != null) {
+            var devicePosition = device.transform.position;
             devicesMap.Remove(coord);
             Destroy(device.gameObject);
+            
+            for (int i = 0; i < Random.Range(1, 5); i++) {
+                Instantiate(coinPrefab, devicePosition, Quaternion.identity, coinsContainer.transform);
+            }
+            
             return true;
         }
 

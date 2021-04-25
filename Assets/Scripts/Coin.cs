@@ -9,13 +9,11 @@ public class Coin : MonoBehaviour {
     private Timer blinkingTimer = new Timer();
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
-    private GameMaster gameMaster;
 
     private void Start() {
         playerObject = GameObject.Find("Player");
         rigidbody = GetComponent<Rigidbody2D>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
-        gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         
@@ -55,7 +53,7 @@ public class Coin : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D target) {
         if (target.gameObject.CompareTag("Player")) {
-            gameMaster.coins += 5;
+            GameObject.Find("GameMaster").GetComponent<GameMaster>().coins += 5;
             audioManager.PlayPickupCoinSound();
             
             Destroy(gameObject);

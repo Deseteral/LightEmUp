@@ -132,3 +132,4 @@ MonoBehaviour:
   bulletPrefab: {fileID: 1227194870020073082, guid: 3921145b452f94c0a8cbbb81fec4da71, type: 3}
   lampPrefab: {fileID: 5823411731205462583, guid: e507ada748e6442a1a7d41748e680ae2, type: 3}
   turretPrefab: {fileID: 8778132382267877048}
+  coinPrefab: {fileID: 2573629209362645227, guid: 241ddcaf5ee64408196e794f960aee19, type: 3}
