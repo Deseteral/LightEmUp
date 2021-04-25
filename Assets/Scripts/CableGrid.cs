@@ -17,6 +17,15 @@ public class CableGrid : MonoBehaviour {
     private void Start() {
         mapGenerator = GameObject.Find("GameManager").GetComponent<MapGenerator>();
         map = new bool[mapGenerator.size, mapGenerator.size];
+
+        // Place first lamp
+        var firstLampPositionInfo = mapGenerator.FindFirstLampPosition(mapGenerator.generatorCoords.Item1, mapGenerator.generatorCoords.Item2);
+        foreach (var (x,y) in firstLampPositionInfo) PlaceCable(x, y);
+        
+        var (lampX, lampY) = firstLampPositionInfo[1];
+        var lampGameObject = GameObject.Find("Lamp");
+        lampGameObject.transform.position = new Vector3(lampX + 0.5f, lampY + 0.5f);
+        lampGameObject.GetComponent<ElectricalDevice>().ResetPositionInfo();
     }
 
     public void PlaceCable(int x, int y) {

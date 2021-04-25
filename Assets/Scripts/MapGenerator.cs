@@ -271,6 +271,20 @@ public class MapGenerator : MonoBehaviour {
         // return positions;
     }
 
+    public (int, int)[] FindFirstLampPosition(int spawnX, int spawnY) {
+        foreach (var (dx,dy) in DIRECTIONS) {
+            int nx = spawnX + dx;
+            int ny = spawnY + dy;
+            int nnx = spawnX + dx * 2;
+            int nny = spawnY + dy * 2;
+            if (m[nx, ny] == false && m[nnx, nny] == false) {
+                return new[] {(nx, ny), (nnx, nny)};
+            }
+        }
+
+        return new (int, int)[] {};
+    }
+
     private void ApplyMapToTilemap() {
         for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
