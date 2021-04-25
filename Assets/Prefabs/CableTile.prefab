@@ -131,12 +131,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasPower: 0
-  center: {fileID: 656157377453216539}
   directionalSprites:
   - {fileID: 656157377915221260}
   - {fileID: 656157378243766105}
   - {fileID: 656157377364954487}
   - {fileID: 656157377842555129}
+  - {fileID: 656157377453216539}
 --- !u!1 &656157377453216537
 GameObject:
   m_ObjectHideFlags: 0
