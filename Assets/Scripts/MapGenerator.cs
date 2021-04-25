@@ -204,8 +204,6 @@ public class MapGenerator : MonoBehaviour {
                 winningTile = (x, y, currentDistance);
             }
 
-            if (currentDistance > 10) return winningTile; // TODO: WHOAH DEBUG
-            
             foreach (int i in DIRECTIONS_DIAGONAL) {
                 foreach (int j in DIRECTIONS_DIAGONAL) {
                     if (i != 0 && j != 0) continue;
