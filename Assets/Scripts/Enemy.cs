@@ -6,7 +6,6 @@ public class Enemy : MonoBehaviour {
     public float attentionRadius = 5.5f;
 
     public GameObject coinPrefab;
-    public AudioClip explosionClip;
 
     private Vector2 delta = Vector2.zero;
     private Timer timer = new Timer();
@@ -44,6 +43,29 @@ public class Enemy : MonoBehaviour {
         if (CanSeePlayer(playerPosition) && distanceToPlayer <= attentionRadius) {
             Vector2 directionToPlayer = (playerPosition - position).normalized;
             delta = directionToPlayer;
+        } else { // Is attracted to cables? 
+            // Find closest cable
+            GameObject[] cableGameObjects = GameObject.FindGameObjectsWithTag("Cable");
+
+            float maxDistance = 3f;
+            float bestDistance = float.MaxValue;
+            GameObject bestCable = null;
+
+            foreach (var e in cableGameObjects) {
+                var targetPosition = e.transform.position;
+                var distanceToTarget = Vector2.Distance(targetPosition, position);
+                if (distanceToTarget > maxDistance) continue;
+
+                if (distanceToTarget < bestDistance) {
+                    bestDistance = distanceToTarget;
+                    bestCable = e;
+                }
+            }
+
+            if (bestCable != null) {
+                Vector2 directionToTarget = (Vector2)bestCable.transform.position - position;
+                delta = directionToTarget;
+            }
         }
 
         // Apply force
@@ -83,5 +105,10 @@ public class Enemy : MonoBehaviour {
         }
         
         audioManager.PlayExplosionSound(transform.position);
+    }
+
+    public void PushBack(float strength) {
+        Vector2 force = -delta * strength;
+        rigidbody.AddForce(force, ForceMode2D.Impulse);
     }
 }

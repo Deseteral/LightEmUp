@@ -37,6 +37,7 @@ public class CableGrid : MonoBehaviour {
         var cableTilePosition = new Vector3(x + 0.5f, y + 0.5f, 0);
         var cableTileGameObject = Instantiate(cableTilePrefab, cableTilePosition, Quaternion.identity, transform);
         var cableTile = cableTileGameObject.GetComponent<CableTile>();
+        cableTile.parentGrid = this;
 
         // Update maps
         cableTiles[(x, y)] = cableTile;

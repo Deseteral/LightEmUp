@@ -9,6 +9,7 @@ TagManager:
   - Spawner
   - Coin
   - Light
+  - Cable
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Spawners
   - Coins
   - Lights
-  - 
+  - Cables
   - 
   - 
   - 

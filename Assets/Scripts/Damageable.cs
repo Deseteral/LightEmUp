@@ -10,19 +10,23 @@ public class Damageable : MonoBehaviour {
     private Color originalColor;
     private SpriteRenderer spriteRenderer;
 
+    private Enemy enemy;
+    private EnemySpawner enemySpawner;
+
     void Start() {
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        enemy = GetComponent<Enemy>();
+        enemySpawner = GetComponent<EnemySpawner>();
+
         originalColor = spriteRenderer.color;
     }
 
     void Update() {
         if (health <= 0) {
-            var enemy = GetComponent<Enemy>();
             if (enemy != null) enemy.OnDeath();
-            
-            var enemySpawner = GetComponent<EnemySpawner>();
             if (enemySpawner != null) enemySpawner.OnDeath();
-            
+
             Destroy(gameObject);
         }
 
@@ -39,7 +43,7 @@ public class Damageable : MonoBehaviour {
             health -= 34;
             blink = true;
         }
-        
+
         if (other.collider.CompareTag("Enemy") && ignoreEnemies == false) {
             health -= 5;
             blink = true;
