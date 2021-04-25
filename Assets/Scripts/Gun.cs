@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Gun : MonoBehaviour {
@@ -16,8 +17,8 @@ public class Gun : MonoBehaviour {
         shootingDelayTimer.Update();
     }
 
-    public void Shoot(Vector2 shootingDirection) {
-        if (shootingDelayTimer.Check() == false) return;
+    public bool Shoot(Vector2 shootingDirection) {
+        if (shootingDelayTimer.Check() == false) return false;
 
         var position = transform.position;
         var bulletPosition = (Vector2) position + shootingDirection;
@@ -26,5 +27,6 @@ public class Gun : MonoBehaviour {
         bulletGameObject.GetComponent<Bullet>().direction = shootingDirection;
 
         shootingDelayTimer.Set(shootingDelayMs);
+        return true;
     }
 }

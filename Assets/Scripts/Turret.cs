@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour {
     private ElectricalDevice electricalDevice;
+    private AudioManager audioManager;
     private Gun gun;
 
     private void Start() {
         electricalDevice = GetComponent<ElectricalDevice>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         gun = GetComponent<Gun>();
     }
 
@@ -25,22 +27,25 @@ public class Turret : MonoBehaviour {
             var distanceToTarget = Vector2.Distance(targetPosition, position);
             if (distanceToTarget > maxDistance) continue;
 
-            Vector2 directionToTarget = (targetPosition - position).normalized;
-            if (CanSeeTarget(directionToTarget, distanceToTarget)) {
+            if (CanSeeTarget(targetPosition)) {
+                var directionToTarget = (targetPosition - position).normalized;
                 shootingDirection = directionToTarget;
                 break;
             }
         }
 
         if (shootingDirection != Vector2.zero) {
-            gun.Shoot(shootingDirection);
+            bool didShoot = gun.Shoot(shootingDirection);
+            if (didShoot) {
+                audioManager.PlayShootingGunSound(transform.position);
+            }
         }
     }
     
-    private bool CanSeeTarget(Vector2 directionToTarget, float distanceToTarget) {
+    private bool CanSeeTarget(Vector2 targetPosition) {
         int tilemapAndEnemiesMask = (1 << 6) | (1 << 8);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget + 10f, tilemapAndEnemiesMask);
-
+        RaycastHit2D hit = Physics2D.Linecast(transform.position, targetPosition, tilemapAndEnemiesMask);
+        
         return hit.collider != null && hit.collider.gameObject.CompareTag("Enemy");
     }
 }

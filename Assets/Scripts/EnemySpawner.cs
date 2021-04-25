@@ -6,11 +6,13 @@ public class EnemySpawner : MonoBehaviour {
     public GameObject enemyPrefab;
     public int maxChildren = 5;
     public GameObject coinPrefab;
+    public AudioClip explosionClip;
 
     private MapGenerator mapGenerator;
     private GameObject player;
     private GameObject enemiesContainer;
     private GameObject coinsContainer;
+    private AudioManager audioManager;
 
     private Timer nextSpawnTimer = new Timer();
     private int aliveChildren = 0;
@@ -23,13 +25,12 @@ public class EnemySpawner : MonoBehaviour {
         player = GameObject.Find("Player");
         enemiesContainer = GameObject.Find("EnemiesContainer");
         coinsContainer = GameObject.Find("CoinsContainer");
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         nextSpawnTimer.Set(1000);
     }
 
     void Update() {
-        return;
-        
         Vector2 position = transform.position;
         Vector2 playerPosition = player.transform.position;
         float distanceToPlayer = Vector2.Distance(position, playerPosition);
@@ -67,5 +68,7 @@ public class EnemySpawner : MonoBehaviour {
         for (int i = 0; i < Random.Range(5, 10); i++) {
             Instantiate(coinPrefab, transform.position, Quaternion.identity, coinsContainer.transform);
         }
+        
+        audioManager.PlayExplosionSound(transform.position);
     }
 }

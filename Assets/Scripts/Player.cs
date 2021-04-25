@@ -8,15 +8,17 @@ public class Player : MonoBehaviour {
 
     public GameObject lampPrefab;
     public GameObject turretPrefab;
-
+    
     private new Rigidbody2D rigidbody;
     private Gun gun;
     private CableGrid cableGrid;
+    private AudioManager audioManager;
 
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
         gun = GetComponent<Gun>();
         cableGrid = GameObject.Find("CableGrid").GetComponent<CableGrid>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     void FixedUpdate() {
@@ -57,10 +59,15 @@ public class Player : MonoBehaviour {
         // Shoot
         if (Input.GetMouseButton(0)) {
             Vector2 shootingDirection = (mouseInWorld - position).normalized;
-            gun.Shoot(shootingDirection);
+            bool didShoot = gun.Shoot(shootingDirection);
 
-            // Apply recoil
-            rigidbody.AddForce(-shootingDirection * recoilStrength, ForceMode2D.Impulse);
+            if (didShoot) {
+                // Apply recoil
+                rigidbody.AddForce(-shootingDirection * recoilStrength, ForceMode2D.Impulse);
+            
+                // Play sound
+                audioManager.PlayPlayerShootingGunSound();
+            }
         }
     }
 

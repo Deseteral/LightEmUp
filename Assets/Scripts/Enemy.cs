@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
     public float attentionRadius = 5.5f;
 
     public GameObject coinPrefab;
+    public AudioClip explosionClip;
 
     private Vector2 delta = Vector2.zero;
     private Timer timer = new Timer();
@@ -14,9 +15,11 @@ public class Enemy : MonoBehaviour {
     private GameObject player;
     private EnemySpawner parent;
     private GameObject coinsContainer;
+    private AudioManager audioManager;
 
     private void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         player = GameObject.Find("Player");
         coinsContainer = GameObject.Find("CoinsContainer");
         
@@ -30,8 +33,6 @@ public class Enemy : MonoBehaviour {
 
         if (distanceToPlayer > 15f) return; // Perf optimization
 
-        Vector2 directionToPlayer = (playerPosition - position).normalized;
-
         timer.Update();
 
         // Randomly change position
@@ -40,7 +41,8 @@ public class Enemy : MonoBehaviour {
         }
 
         // Is attracted to player?
-        if (CanSeePlayer(directionToPlayer, distanceToPlayer) && distanceToPlayer <= attentionRadius) {
+        if (CanSeePlayer(playerPosition) && distanceToPlayer <= attentionRadius) {
+            Vector2 directionToPlayer = (playerPosition - position).normalized;
             delta = directionToPlayer;
         }
 
@@ -62,9 +64,9 @@ public class Enemy : MonoBehaviour {
         }
     }
 
-    private bool CanSeePlayer(Vector2 directionToPlayer, float distanceToPlayer) {
+    private bool CanSeePlayer(Vector2 playerPosition) {
         int tilemapAndPlayerMask = (1 << 7) | (1 << 8);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer + 10f, tilemapAndPlayerMask);
+        RaycastHit2D hit = Physics2D.Linecast(transform.position, playerPosition, tilemapAndPlayerMask);
 
         return hit.collider != null && hit.collider.gameObject.CompareTag("Player");
     }
@@ -79,5 +81,7 @@ public class Enemy : MonoBehaviour {
         for (int i = 0; i < Random.Range(1, 5); i++) {
             Instantiate(coinPrefab, transform.position, Quaternion.identity, coinsContainer.transform);
         }
+        
+        audioManager.PlayExplosionSound(transform.position);
     }
 }

@@ -2,12 +2,16 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class Coin : MonoBehaviour {
-    private GameObject player;
+    private GameObject playerObject;
+    private Player player;
     private new Rigidbody2D rigidbody;
-    
+    private AudioManager audioManager;
+
     private void Start() {
-        player = GameObject.Find("Player");
+        playerObject = GameObject.Find("Player");
+        player = playerObject.GetComponent<Player>();
         rigidbody = GetComponent<Rigidbody2D>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         
         var splashDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
         splashDirection *= 0.5f;
@@ -16,7 +20,7 @@ public class Coin : MonoBehaviour {
 
     private void FixedUpdate() {
         var position = transform.position;
-        var playerPosition = player.transform.position;
+        var playerPosition = playerObject.transform.position;
         
         Vector2 directionToPlayer = (playerPosition - position).normalized;
         float distanceToPlayer = Vector2.Distance(position, playerPosition);
@@ -29,7 +33,9 @@ public class Coin : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D target) {
         if (target.gameObject.CompareTag("Player")) {
-            target.gameObject.GetComponent<Player>().coins += 5;
+            player.coins += 5;
+            audioManager.PlayPickupCoinSound();
+            
             Destroy(gameObject);
         }
     }

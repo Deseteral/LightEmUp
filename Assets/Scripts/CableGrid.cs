@@ -22,7 +22,7 @@ public class CableGrid : MonoBehaviour {
     public void PlaceCable(int x, int y) {
         // Check if cable can be placed
         var (generatorX, generatorY) = mapGenerator.generatorCoords;
-        if (mapGenerator.GetCollisonMap()[x, y] || (generatorX == x && generatorY == y) || map[x, y]) return;
+        if (x < 0 || y < 0 || x >= mapGenerator.size || y >= mapGenerator.size || mapGenerator.GetCollisonMap()[x, y] || (generatorX == x && generatorY == y) || map[x, y]) return;
 
         // Create CableTile game object
         var cableTilePosition = new Vector3(x + 0.5f, y + 0.5f, 0);
@@ -35,7 +35,7 @@ public class CableGrid : MonoBehaviour {
 
         // Regenerate power information
         RegeneratePowerInfo();
-        
+
         // Reset sprites on all cables
         foreach (var key in cableTiles.Keys) {
             cableTiles[key].ResetSprites(GetNeighbourCables(key.Item1, key.Item2));
@@ -46,7 +46,7 @@ public class CableGrid : MonoBehaviour {
         // Check if there is cable to be removed
         var coord = (x, y);
         if (cableTiles.Keys.Contains(coord) == false) return;
-        
+
         // Destroy game object and update maps
         Destroy(cableTiles[coord].gameObject);
         cableTiles.Remove(coord);
@@ -54,7 +54,7 @@ public class CableGrid : MonoBehaviour {
 
         // Regenerate power information
         RegeneratePowerInfo();
-        
+
         // Reset sprites on all cables
         foreach (var key in cableTiles.Keys) {
             cableTiles[key].ResetSprites(GetNeighbourCables(key.Item1, key.Item2));
@@ -97,7 +97,7 @@ public class CableGrid : MonoBehaviour {
 
                 if (cablePositions.Contains(coord)) {
                     cablePositions.Remove(coord);
-                    
+
                     queue.Add(coord);
                     cableTiles[coord].hasPower = true;
                 }

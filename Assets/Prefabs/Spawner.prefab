@@ -73,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1496542439
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -2135585597343286014, guid: eed45a33cd08446c8b88325cf82fc52f, type: 3}
   m_Color: {r: 0.5283019, g: 0.16997646, b: 0, a: 1}
@@ -148,6 +148,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 4556420125652007003, guid: d4b123d4236d641e08c138b9ffd0ee71, type: 3}
   maxChildren: 5
   coinPrefab: {fileID: 2573629209362645227, guid: 241ddcaf5ee64408196e794f960aee19, type: 3}
+  explosionClip: {fileID: 8300000, guid: c2f321ebd0dc8433b970936c299b59a8, type: 3}
 --- !u!114 &436761468757373561
 MonoBehaviour:
   m_ObjectHideFlags: 0
