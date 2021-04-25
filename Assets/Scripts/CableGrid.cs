@@ -10,18 +10,21 @@ public class CableGrid : MonoBehaviour {
     private Dictionary<(int, int), CableTile> cableTiles = new Dictionary<(int, int), CableTile>();
 
     private MapGenerator mapGenerator;
+    private Endpoint endpoint;
 
     private static readonly List<(int, int)> DIRECTIONS = new List<(int, int)> {(0, 1), (1, 0), (0, -1), (-1, 0)};
     private static readonly List<(int, int)> DIRECTIONS_WITH_CENTER = DIRECTIONS.Concat(new List<(int, int)> {(0, 0)}).ToList();
 
     private void Start() {
         mapGenerator = GameObject.Find("GameManager").GetComponent<MapGenerator>();
+        endpoint = GameObject.Find("Endpoint").GetComponent<Endpoint>();
+
         map = new bool[mapGenerator.size, mapGenerator.size];
 
         // Place first lamp
         var firstLampPositionInfo = mapGenerator.FindFirstLampPosition(mapGenerator.generatorCoords.Item1, mapGenerator.generatorCoords.Item2);
-        foreach (var (x,y) in firstLampPositionInfo) PlaceCable(x, y);
-        
+        foreach (var (x, y) in firstLampPositionInfo) PlaceCable(x, y);
+
         var (lampX, lampY) = firstLampPositionInfo[1];
         var lampGameObject = GameObject.Find("Lamp");
         lampGameObject.transform.position = new Vector3(lampX + 0.5f, lampY + 0.5f);
@@ -117,6 +120,8 @@ public class CableGrid : MonoBehaviour {
         foreach (var coord in cablePositions) {
             cableTiles[coord].hasPower = false;
         }
+        
+        endpoint.RegeneratePowerInfo();
     }
 
     public bool IsTilePowered(int x, int y) {

@@ -59,7 +59,9 @@ public class MapGenerator : MonoBehaviour {
             }
             
             // Place endpoint
-            GameObject.Find("Endpoint").transform.position = new Vector3(endpointX + 0.5f, endpointY + 0.5f, 0);
+            var endpointGameObject = GameObject.Find("Endpoint");
+            endpointGameObject.transform.position = new Vector3(endpointX + 0.5f, endpointY + 0.5f, 0);
+            endpointGameObject.GetComponent<Endpoint>().ResetPositionInfo();
         }
 
         Debug.Log($"Map generation attempts: {attempts}");
@@ -199,6 +201,8 @@ public class MapGenerator : MonoBehaviour {
                 winningTile = (x, y, currentDistance);
             }
 
+            if (currentDistance > 10) return winningTile; // TODO: WHOAH DEBUG
+            
             foreach (int i in DIRECTIONS_DIAGONAL) {
                 foreach (int j in DIRECTIONS_DIAGONAL) {
                     if (i != 0 && j != 0) continue;
