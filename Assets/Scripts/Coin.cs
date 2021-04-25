@@ -3,19 +3,19 @@ using Random = UnityEngine.Random;
 
 public class Coin : MonoBehaviour {
     private GameObject playerObject;
-    private Player player;
     private new Rigidbody2D rigidbody;
     private AudioManager audioManager;
     private Timer aliveTimer = new Timer();
     private Timer blinkingTimer = new Timer();
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
+    private GameMaster gameMaster;
 
     private void Start() {
         playerObject = GameObject.Find("Player");
-        player = playerObject.GetComponent<Player>();
         rigidbody = GetComponent<Rigidbody2D>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
         
@@ -55,7 +55,7 @@ public class Coin : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D target) {
         if (target.gameObject.CompareTag("Player")) {
-            player.coins += 5;
+            gameMaster.coins += 5;
             audioManager.PlayPickupCoinSound();
             
             Destroy(gameObject);

@@ -4,7 +4,6 @@ using UnityEngine;
 public class Player : MonoBehaviour {
     public float speed = 25f;
     public float recoilStrength = 0.5f;
-    public int coins = 0;
 
     public GameObject lampPrefab;
     public GameObject turretPrefab;
@@ -13,12 +12,14 @@ public class Player : MonoBehaviour {
     private Gun gun;
     private CableGrid cableGrid;
     private AudioManager audioManager;
+    private GameMaster gameMaster;
 
     void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
         gun = GetComponent<Gun>();
         cableGrid = GameObject.Find("CableGrid").GetComponent<CableGrid>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
     }
 
     void FixedUpdate() {
@@ -72,6 +73,6 @@ public class Player : MonoBehaviour {
     }
 
     private void OnGUI() {
-        GUI.Label(new Rect(0, 0, 100, 50), coins.ToString());
+        GUI.Label(new Rect(0, 0, 100, 50), gameMaster.coins.ToString());
     }
 }
