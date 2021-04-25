@@ -25,6 +25,8 @@ public class Tool : MonoBehaviour {
     private GameObject bulletsContainer;
     private GameObject devicesContainer;
 
+    private GameMaster gameMaster;
+
     private Dictionary<(int, int), GameObject> devicesMap;
 
     private Timer shootingDelayTimer = new Timer();
@@ -34,6 +36,7 @@ public class Tool : MonoBehaviour {
         mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
         bulletsContainer = GameObject.Find("BulletsContainer");
         devicesContainer = GameObject.Find("DevicesContainer");
+        gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
 
         devicesMap = new Dictionary<(int, int), GameObject>();
 
@@ -77,16 +80,29 @@ public class Tool : MonoBehaviour {
 
     private bool PlaceCable(Vector2 position) {
         var tilePosition = GetTilePosition(position);
-        return cableGrid.PlaceCable((int) tilePosition.x, (int) tilePosition.y);
+
+        int cost = 1;
+        if (gameMaster.coins < cost) return false;
+        
+        bool didPlace = cableGrid.PlaceCable((int) tilePosition.x, (int) tilePosition.y);
+
+        if (didPlace) {
+            gameMaster.coins -= cost;
+        }
+
+        return didPlace;
     }
 
-    private bool PlaceDevice(Vector2 position, GameObject devicePrefab) {
+    private bool PlaceDevice(Vector2 position, GameObject devicePrefab, int cost) {
         var tilePosition = GetTilePosition(position);
         var coord = ((int) tilePosition.x, (int) tilePosition.y);
 
+        if (gameMaster.coins < cost) return false;
+        
         if (devicesMap.ContainsKey(coord) == false) {
             var deviceObject = Instantiate(devicePrefab, tilePosition, Quaternion.identity, devicesContainer.transform);
             devicesMap[coord] = deviceObject;
+            gameMaster.coins -= cost;
             return true;
         }
 
@@ -94,11 +110,11 @@ public class Tool : MonoBehaviour {
     }
 
     private bool PlaceLamp(Vector2 position) {
-        return PlaceDevice(position, lampPrefab);
+        return PlaceDevice(position, lampPrefab, 25);
     }
 
     private bool PlaceTurret(Vector2 position) {
-        return PlaceDevice(position, turretPrefab);
+        return PlaceDevice(position, turretPrefab, 100);
     }
 
     private bool RemoveItem(Vector2 position) {

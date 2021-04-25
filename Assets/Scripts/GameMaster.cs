@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameMaster : MonoBehaviour {
-    public int coins;
+    public int coins = 30;
     public int currentLevel = 1; 
     
     private void Awake() {
