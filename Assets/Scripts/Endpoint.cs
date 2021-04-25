@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Endpoint : MonoBehaviour {
     public bool hasPower = false;
@@ -10,20 +10,30 @@ public class Endpoint : MonoBehaviour {
 
     private GameObject playerObject;
     private GameMaster gameMaster;
+    private Text endpointTooltipText;
 
     private void Start() {
         cableGrid = GameObject.Find("CableGrid").GetComponent<CableGrid>();
         playerObject = GameObject.Find("Player");
         gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
+        endpointTooltipText = GameObject.Find("EndpointTooltip").GetComponent<Text>();
         ResetPositionInfo();
     }
 
     private void FixedUpdate() {
-        if (hasPower) {
-            var playerPosition = playerObject.transform.position;
-            if (Vector3.Distance(transform.position, playerPosition) < 2f) {
-                if (Input.GetKeyDown(KeyCode.X)) gameMaster.AdvanceToNextLevel();
+        var playerPosition = playerObject.transform.position;
+        if (Vector3.Distance(transform.position, playerPosition) < 2f) {
+            if (hasPower) {
+                endpointTooltipText.text = "press e to descent";
+                
+                if (Input.GetKey(KeyCode.E)) {
+                    gameMaster.AdvanceToNextLevel();    
+                }
+            } else {
+                endpointTooltipText.text = "Connect the power to descent";
             }
+        } else {
+            endpointTooltipText.text = "";
         }
     }
 
