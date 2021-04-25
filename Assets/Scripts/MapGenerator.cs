@@ -64,6 +64,7 @@ public class MapGenerator : MonoBehaviour {
             var endpointGameObject = GameObject.Find("Endpoint");
             endpointGameObject.transform.position = new Vector3(endpointX + 0.5f, endpointY + 0.5f, 0);
             endpointGameObject.GetComponent<Endpoint>().ResetPositionInfo();
+            ground.SetTile(new Vector3Int(endpointX, endpointY, 0), groundTiles[0]);
         }
 
         Debug.Log($"Map generation attempts: {attempts}");
