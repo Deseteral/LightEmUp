@@ -93,11 +93,6 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void OnGUI() {
-        GUI.Label(new Rect(0, 0, 100, 50), gameMaster.coins.ToString());
-        GUI.Label(new Rect(0, 60, 100, 50), tool.toolType.ToString());
-    }
-
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.collider != null && other.collider.gameObject.CompareTag("Enemy")) {
             var enemy = other.collider.GetComponent<Enemy>();
