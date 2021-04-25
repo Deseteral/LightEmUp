@@ -7,6 +7,7 @@ public class UIManager : MonoBehaviour {
     
     private Text coinValueText;
     private Text healthValueText;
+    private Text currentLevelValueText;
 
     private void Start() {
         gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
@@ -14,6 +15,9 @@ public class UIManager : MonoBehaviour {
         
         coinValueText = GameObject.Find("CoinValue").GetComponent<Text>();
         healthValueText = GameObject.Find("HealthValue").GetComponent<Text>();
+        currentLevelValueText = GameObject.Find("CurrentLevelValue").GetComponent<Text>();
+        
+        currentLevelValueText.text = $"Level: {gameMaster.currentLevel}";
     }
 
     private void FixedUpdate() {
