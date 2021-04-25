@@ -6,19 +6,32 @@ public class Coin : MonoBehaviour {
     private Player player;
     private new Rigidbody2D rigidbody;
     private AudioManager audioManager;
+    private Timer aliveTimer = new Timer();
+    private Timer blinkingTimer = new Timer();
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
 
     private void Start() {
         playerObject = GameObject.Find("Player");
         player = playerObject.GetComponent<Player>();
         rigidbody = GetComponent<Rigidbody2D>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
         
         var splashDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
         splashDirection *= 0.5f;
         GetComponent<Rigidbody2D>().AddForce(splashDirection, ForceMode2D.Impulse);
+
+        int timeToBeAlive = Random.Range(7, 12);
+        aliveTimer.Set(timeToBeAlive * 1000);
+        blinkingTimer.Set((timeToBeAlive - 3) * 1000);
     }
 
     private void FixedUpdate() {
+        aliveTimer.Update();
+        blinkingTimer.Update();
+        
         var position = transform.position;
         var playerPosition = playerObject.transform.position;
         
@@ -28,6 +41,15 @@ public class Coin : MonoBehaviour {
         
         if (distanceToPlayer < 3f) {
             rigidbody.AddForce(directionToPlayer * speedScale, ForceMode2D.Force);
+        }
+        
+        if (blinkingTimer.Check()) {
+            int timeMillis = (int) (Time.timeSinceLevelLoad * 1000);
+            spriteRenderer.color = ((timeMillis % 1000) == 0) ? Color.white : originalColor;
+        }
+        
+        if (aliveTimer.Check()) {
+            Destroy(gameObject);
         }
     }
 
