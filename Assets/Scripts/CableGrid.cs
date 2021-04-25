@@ -16,7 +16,7 @@ public class CableGrid : MonoBehaviour {
     private static readonly List<(int, int)> DIRECTIONS_WITH_CENTER = DIRECTIONS.Concat(new List<(int, int)> {(0, 0)}).ToList();
 
     private void Start() {
-        mapGenerator = GameObject.Find("GameManager").GetComponent<MapGenerator>();
+        mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
         endpoint = GameObject.Find("Endpoint").GetComponent<Endpoint>();
 
         map = new bool[mapGenerator.size, mapGenerator.size];

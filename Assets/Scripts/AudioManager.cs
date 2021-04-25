@@ -27,7 +27,7 @@ public class AudioManager : MonoBehaviour {
     }
     
     public void PlayPickupCoinSound() {
-        if (pickupCoinTimer.Check()) {
+        if (pickupCoinTimer.Check() || pickupCoinPitch > 2.5f) {
             pickupCoinPitch = 1f;
         }
         

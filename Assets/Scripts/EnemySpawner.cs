@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour {
     private const int NEXT_SPAWN_TIME_MAX_MS = 10 * 1000;
 
     void Start() {
-        mapGenerator = GameObject.Find("GameManager").GetComponent<MapGenerator>();
+        mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
         player = GameObject.Find("Player");
         enemiesContainer = GameObject.Find("EnemiesContainer");
         coinsContainer = GameObject.Find("CoinsContainer");

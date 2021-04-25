@@ -276,7 +276,7 @@ public class MapGenerator : MonoBehaviour {
     }
 
     public (int, int)[] FindFirstLampPosition(int spawnX, int spawnY) {
-        foreach (var (dx,dy) in DIRECTIONS) {
+        foreach (var (dx, dy) in DIRECTIONS) {
             int nx = spawnX + dx;
             int ny = spawnY + dy;
             int nnx = spawnX + dx * 2;
