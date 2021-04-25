@@ -1,7 +1,8 @@
-using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Gun : MonoBehaviour {
+    public float spread = 10f;
     public int shootingDelayMs = 150;
     public GameObject bulletPrefab;
 
@@ -20,6 +21,10 @@ public class Gun : MonoBehaviour {
     public bool Shoot(Vector2 shootingDirection) {
         if (shootingDelayTimer.Check() == false) return false;
 
+        // Apply spread
+        shootingDirection = Quaternion.Euler(0, 0, Random.Range(-spread, spread)) * shootingDirection;
+        
+        // Shoot the thing
         var position = transform.position;
         var bulletPosition = (Vector2) position + shootingDirection;
 
