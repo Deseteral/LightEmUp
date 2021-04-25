@@ -15,12 +15,26 @@ public class Enemy : MonoBehaviour {
     private EnemySpawner parent;
     private GameObject coinsContainer;
     private AudioManager audioManager;
+    private SpriteRenderer spriteRenderer;
+
+    private int enemyType = 0;
+    public Sprite[] sprites;
 
     private void Start() {
         rigidbody = GetComponent<Rigidbody2D>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         player = GameObject.Find("Player");
         coinsContainer = GameObject.Find("CoinsContainer");
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
+        enemyType = Random.Range(0, 2);
+        spriteRenderer.sprite = sprites[enemyType];
+        if (enemyType == 0) {
+            rigidbody.mass = 0.25f;
+        } else {
+            rigidbody.mass = 0.5f;
+            GetComponent<Damageable>().health = 300;
+        }
         
         timer.Set(0);
     }
@@ -70,8 +84,9 @@ public class Enemy : MonoBehaviour {
 
         // Apply force
         rigidbody.AddForce(delta * speed, ForceMode2D.Force);
-
-        // DrawCircle(transform.position, AttentionRadius, Color.red);
+        
+        // Flip sprite
+        spriteRenderer.flipX = delta.x < 0;
     }
 
     private void ChangeDirection(Vector2 newDirection) {
