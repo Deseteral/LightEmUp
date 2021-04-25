@@ -25,7 +25,8 @@ public class MapGenerator : MonoBehaviour {
     
     void Start() {
         bool isValidMap = false;
-
+        Vector3 playerPosition = Vector3.zero;
+        
         while (!isValidMap) {
             CelluarAutomata();
             RemoveClosedRooms();
@@ -36,7 +37,8 @@ public class MapGenerator : MonoBehaviour {
             isValidMap = true;
             
             // Set player position
-            GameObject.Find("Player").transform.position = new Vector3(spawnX + 0.5f, spawnY + 0.5f, 0);
+            playerPosition =  new Vector3(spawnX + 0.5f, spawnY + 0.5f, 0);
+            GameObject.Find("Player").transform.position = playerPosition;
             
             // Place generator
             foreach (var (dx, dy) in DIRECTIONS) {
@@ -57,9 +59,11 @@ public class MapGenerator : MonoBehaviour {
         var spawnersContainer = GameObject.Find("SpawnersContainer");
         foreach (var (spawnerX, spawnerY) in FindEnemySpawnerPositions()) {
             var spawnerPosition = new Vector3(spawnerX + 0.5f, spawnerY + 0.5f);
+            
+            // Skip spawner if it is near the player spawn point
+            if (Vector3.Distance(playerPosition, spawnerPosition) < 10f) continue;
+            
             Instantiate(enemySpawner, spawnerPosition, Quaternion.identity, spawnersContainer.transform);
-
-            // TODO: Don't place if near player
         }
     }
 
