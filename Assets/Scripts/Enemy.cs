@@ -111,4 +111,8 @@ public class Enemy : MonoBehaviour {
         Vector2 force = -delta * strength;
         rigidbody.AddForce(force, ForceMode2D.Impulse);
     }
+
+    public Vector2 GetDelta() {
+        return delta;
+    }
 }

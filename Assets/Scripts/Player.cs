@@ -3,8 +3,10 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     public float speed = 25f;
-    public float recoilStrength = 0.5f;
+    public float recoilStrength = 0.2f;
 
+    private Vector2 delta;
+    
     private new Rigidbody2D rigidbody;
     private Tool tool;
     private CableGrid cableGrid;
@@ -23,13 +25,14 @@ public class Player : MonoBehaviour {
         var position = transform.position;
         var mouseInWorld = Utils.MouseInWorld();
 
-        Vector2 delta = Vector2.zero;
-        if (Input.GetKey(KeyCode.W)) delta.y += speed;
-        if (Input.GetKey(KeyCode.S)) delta.y -= speed;
-        if (Input.GetKey(KeyCode.D)) delta.x += speed;
-        if (Input.GetKey(KeyCode.A)) delta.x -= speed;
+        delta = Vector2.zero;
+        if (Input.GetKey(KeyCode.W)) delta += Vector2.up;
+        if (Input.GetKey(KeyCode.S)) delta += Vector2.down;
+        if (Input.GetKey(KeyCode.D)) delta += Vector2.right;
+        if (Input.GetKey(KeyCode.A)) delta += Vector2.left;
+        delta = delta.normalized;
 
-        rigidbody.AddForce(delta, ForceMode2D.Force);
+        rigidbody.AddForce(delta * speed, ForceMode2D.Force);
 
         // Use tool
         if (Input.GetMouseButton(0)) {
@@ -63,5 +66,12 @@ public class Player : MonoBehaviour {
     private void OnGUI() {
         GUI.Label(new Rect(0, 0, 100, 50), gameMaster.coins.ToString());
         GUI.Label(new Rect(0, 60, 100, 50), tool.toolType.ToString());
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.collider != null&& other.collider.gameObject.CompareTag("Enemy")) {
+            var enemy = other.collider.GetComponent<Enemy>();
+            rigidbody.AddForce(enemy.GetDelta() * 3f, ForceMode2D.Impulse);
+        }
     }
 }
