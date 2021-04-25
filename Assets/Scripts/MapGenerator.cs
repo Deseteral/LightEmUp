@@ -22,6 +22,7 @@ public class MapGenerator : MonoBehaviour {
     private bool[,] m;
 
     private readonly List<(int, int)> DIRECTIONS = new List<(int, int)> {(0, 1), (1, 0), (0, -1), (-1, 0)};
+    private readonly List<int> DIRECTIONS_DIAGONAL = new List<int> {-1, 0, 1};
 
     void Start() {
         bool isValidMap = false;
@@ -33,9 +34,13 @@ public class MapGenerator : MonoBehaviour {
             RemoveClosedRooms();
             attempts++;
 
+            // Check if map is valid
             var (spawnX, spawnY) = FindSpawnPoint();
-
             if (spawnX == -1 || spawnY == -1) continue;
+
+            var (endpointX, endpointY, _) = FindEndpointTile(spawnX, spawnY);
+            if (endpointX == -1 || endpointY == -1) continue;
+
             isValidMap = true;
 
             // Set player position
@@ -52,6 +57,9 @@ public class MapGenerator : MonoBehaviour {
                     break;
                 }
             }
+            
+            // Place endpoint
+            GameObject.Find("Endpoint").transform.position = new Vector3(endpointX + 0.5f, endpointY + 0.5f, 0);
         }
 
         Debug.Log($"Map generation attempts: {attempts}");
@@ -119,8 +127,8 @@ public class MapGenerator : MonoBehaviour {
 
     private int CountNeighbours(int x, int y) {
         int count = 0;
-        foreach (int i in new List<int> {-1, 0, 1}) {
-            foreach (int j in new List<int> {-1, 0, 1}) {
+        foreach (int i in DIRECTIONS_DIAGONAL) {
+            foreach (int j in DIRECTIONS_DIAGONAL) {
                 if (i == 0 && j == 0) continue;
                 int nx = x + i;
                 int ny = y + j;
@@ -146,8 +154,8 @@ public class MapGenerator : MonoBehaviour {
             var (x, y) = queue[0];
             queue.RemoveAt(0);
 
-            foreach (int i in new List<int> {-1, 0, 1}) {
-                foreach (int j in new List<int> {-1, 0, 1}) {
+            foreach (int i in DIRECTIONS_DIAGONAL) {
+                foreach (int j in DIRECTIONS_DIAGONAL) {
                     if (i != 0 && j != 0) continue;
 
                     int nx = x + i;
@@ -169,6 +177,47 @@ public class MapGenerator : MonoBehaviour {
                 if (m[x, y] == false && floodMap[x, y] == false) m[x, y] = true;
             }
         }
+    }
+
+    private (int, int, int) FindEndpointTile(int startX, int startY) {
+        var floodMap = new bool[size, size];
+        var queue = new List<(int, int, int)>();
+
+        floodMap[startX, startY] = true;
+        queue.Add((startX, startY, 0));
+
+        int bestDistance = -1;
+        var winningTile = (-1, -1, -1);
+
+        // Mark neighbours
+        while (queue.Count > 0) {
+            var (x, y, currentDistance) = queue[0];
+            queue.RemoveAt(0);
+
+            if (currentDistance > bestDistance) {
+                bestDistance = currentDistance;
+                winningTile = (x, y, currentDistance);
+            }
+
+            foreach (int i in DIRECTIONS_DIAGONAL) {
+                foreach (int j in DIRECTIONS_DIAGONAL) {
+                    if (i != 0 && j != 0) continue;
+
+                    int nx = x + i;
+                    int ny = y + j;
+
+                    if (
+                        (nx >= 0 && ny >= 0 && nx < size && ny < size) &&
+                        (m[nx, ny] == false && floodMap[nx, ny] == false)
+                    ) {
+                        floodMap[nx, ny] = true;
+                        queue.Add((nx, ny, currentDistance + 1));
+                    }
+                }
+            }
+        }
+
+        return winningTile;
     }
 
     private (int, int) FindSpawnPoint() {
