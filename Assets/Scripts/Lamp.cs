@@ -11,17 +11,14 @@ public class Lamp : MonoBehaviour {
 
     private ElectricalDevice electricalDevice;
     private SpriteRenderer spriteRenderer;
+    private ShadowManager shadowManager;
 
-    private Tilemap shadowTilemap;
-    public Tile shadowTile;
-
-    private bool prevFrameHasPower = false;
+    private Vector3Int[] lightTiles;
 
     private void Start() {
         electricalDevice = GetComponent<ElectricalDevice>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        shadowTilemap = GameObject.Find("Shadow").GetComponent<Tilemap>();
+        shadowManager = GameObject.Find("ShadowManager").GetComponent<ShadowManager>();
 
         if (LIGHT_MASK == null) {
             LIGHT_MASK = new List<(int, int)>();
@@ -61,33 +58,17 @@ public class Lamp : MonoBehaviour {
                 }
             }
         }
+
+        lightTiles = RegenerateLightTiles();
+        shadowManager.RegenerateShadowMap();
     }
 
     private void FixedUpdate() {
         var currentHasPower = electricalDevice.hasPower; // TODO: POTENTIAL PREF PROBLEM
-
-        if (prevFrameHasPower == false && currentHasPower == true) {
-            spriteRenderer.color = ENABLED_COLOR;
-
-            var positionArray = GetLightTiles();
-            var tileArray = Enumerable.Repeat<TileBase>(null, positionArray.Length).ToArray();
-            shadowTilemap.SetTiles(positionArray, tileArray);
-        }
-
-        if (prevFrameHasPower == true && currentHasPower == false) {
-            spriteRenderer.color = DISABLED_COLOR;
-
-            var positionArray = GetLightTiles();
-            var tileArray = Enumerable.Repeat<TileBase>(shadowTile, positionArray.Length).ToArray();
-            shadowTilemap.SetTiles(positionArray, tileArray);
-        }
-
-        prevFrameHasPower = currentHasPower;
+        spriteRenderer.color = currentHasPower ? ENABLED_COLOR : DISABLED_COLOR;
     }
 
-    private Vector3Int[] GetLightTiles() {
-        if (electricalDevice.hasPower == false) return new Vector3Int[] { };
-
+    private Vector3Int[] RegenerateLightTiles() {
         var position = transform.position;
         var positions = new List<Vector3Int> {new Vector3Int((int) position.x, (int) position.y, 0)};
 
@@ -109,5 +90,9 @@ public class Lamp : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Linecast(start, end, tilemapAndLightsMask);
 
         return hit.collider != null && hit.collider.gameObject.CompareTag("Light");
+    }
+
+    public Vector3Int[] GetLightTiles() {
+        return lightTiles;
     }
 }

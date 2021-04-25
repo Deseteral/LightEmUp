@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 
     public GameObject lampPrefab;
     public GameObject turretPrefab;
-    
+
     private new Rigidbody2D rigidbody;
     private Gun gun;
     private CableGrid cableGrid;
@@ -64,7 +64,7 @@ public class Player : MonoBehaviour {
             if (didShoot) {
                 // Apply recoil
                 rigidbody.AddForce(-shootingDirection * recoilStrength, ForceMode2D.Impulse);
-            
+
                 // Play sound
                 audioManager.PlayPlayerShootingGunSound();
             }

@@ -9,16 +9,15 @@ public class ElectricalDevice : MonoBehaviour {
 
     private void Start() {
         cableGrid = GameObject.Find("CableGrid").GetComponent<CableGrid>();
-        ResetPositionInfo();
-    }
-
-    private void FixedUpdate() {
-        hasPower = cableGrid.IsTilePowered(x, y); // TODO: MIGHT BE A PERF PROBLEM
-    }
-
-    public void ResetPositionInfo() {
+    
         var position = transform.position;
         x = (int)position.x;
         y = (int)position.y;
+        
+        RegeneratePowerInfo();
+    }
+
+    public void RegeneratePowerInfo() {
+        hasPower = cableGrid.IsTilePowered(x, y); // TODO: MIGHT BE A PERF PROBLEM
     }
 }

@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class CableGrid : MonoBehaviour {
     public GameObject cableTilePrefab;
+    public GameObject lampPrefab;
 
     private bool[,] map;
     private Dictionary<(int, int), CableTile> cableTiles = new Dictionary<(int, int), CableTile>();
 
     private MapGenerator mapGenerator;
     private Endpoint endpoint;
+    private ShadowManager shadowManager;
 
     private static readonly List<(int, int)> DIRECTIONS = new List<(int, int)> {(0, 1), (1, 0), (0, -1), (-1, 0)};
     private static readonly List<(int, int)> DIRECTIONS_WITH_CENTER = DIRECTIONS.Concat(new List<(int, int)> {(0, 0)}).ToList();
@@ -18,6 +20,7 @@ public class CableGrid : MonoBehaviour {
     private void Start() {
         mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
         endpoint = GameObject.Find("Endpoint").GetComponent<Endpoint>();
+        shadowManager = GameObject.Find("ShadowManager").GetComponent<ShadowManager>();
 
         map = new bool[mapGenerator.size, mapGenerator.size];
 
@@ -26,9 +29,7 @@ public class CableGrid : MonoBehaviour {
         foreach (var (x, y) in firstLampPositionInfo) PlaceCable(x, y);
 
         var (lampX, lampY) = firstLampPositionInfo[1];
-        var lampGameObject = GameObject.Find("Lamp");
-        lampGameObject.transform.position = new Vector3(lampX + 0.5f, lampY + 0.5f);
-        lampGameObject.GetComponent<ElectricalDevice>().ResetPositionInfo();
+        Instantiate(lampPrefab, new Vector3(lampX + 0.5f, lampY + 0.5f), Quaternion.identity);
     }
 
     public void PlaceCable(int x, int y) {
@@ -48,6 +49,9 @@ public class CableGrid : MonoBehaviour {
 
         // Regenerate power information
         RegeneratePowerInfo();
+        
+        // Regenerate shadow tilemap
+        shadowManager.RegenerateShadowMap();
 
         // Reset sprites on all cables
         foreach (var key in cableTiles.Keys) {
@@ -67,6 +71,9 @@ public class CableGrid : MonoBehaviour {
 
         // Regenerate power information
         RegeneratePowerInfo();
+
+        // Regenerate shadow tilemap
+        shadowManager.RegenerateShadowMap();
 
         // Reset sprites on all cables
         foreach (var key in cableTiles.Keys) {
@@ -96,6 +103,12 @@ public class CableGrid : MonoBehaviour {
     }
 
     private void RegeneratePowerInfo() {
+        RegenerateCablePowerInfo();
+        RegenerateElectricalDevicesPowerInfo();
+        endpoint.RegeneratePowerInfo();
+    }
+
+    private void RegenerateCablePowerInfo() {
         var cablePositions = cableTiles.Keys.ToList();
         var queue = new List<(int, int)> {mapGenerator.generatorCoords};
 
@@ -120,8 +133,13 @@ public class CableGrid : MonoBehaviour {
         foreach (var coord in cablePositions) {
             cableTiles[coord].hasPower = false;
         }
-        
-        endpoint.RegeneratePowerInfo();
+    }
+
+    private void RegenerateElectricalDevicesPowerInfo() {
+        var electricalDevices = FindObjectsOfType<ElectricalDevice>();
+        foreach (var electricalDevice in electricalDevices) {
+            electricalDevice.RegeneratePowerInfo();
+        }
     }
 
     public bool IsTilePowered(int x, int y) {
