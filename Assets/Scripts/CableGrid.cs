@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
@@ -17,6 +18,8 @@ public class CableGrid : MonoBehaviour {
     private static readonly List<(int, int)> DIRECTIONS = new List<(int, int)> {(0, 1), (1, 0), (0, -1), (-1, 0)};
     private static readonly List<(int, int)> DIRECTIONS_WITH_CENTER = DIRECTIONS.Concat(new List<(int, int)> {(0, 0)}).ToList();
 
+    private bool first = true;
+
     private void Start() {
         mapGenerator = GameObject.Find("MapGenerator").GetComponent<MapGenerator>();
         endpoint = GameObject.Find("Endpoint").GetComponent<Endpoint>();
@@ -30,6 +33,19 @@ public class CableGrid : MonoBehaviour {
 
         var (lampX, lampY) = firstLampPositionInfo[1];
         Instantiate(lampPrefab, new Vector3(lampX + 0.5f, lampY + 0.5f), Quaternion.identity);
+    }
+
+    private void LateUpdate() {
+        // Duck tape around "first lamp" bug
+        if (first) {
+            var playerPosition = GameObject.Find("Player").transform.position;
+            int x = (int) playerPosition.x;
+            int y = (int) playerPosition.y;
+            PlaceCable(x, y);
+            RemoveCable(x, y);
+
+            first = false;
+        }
     }
 
     public void PlaceCable(int x, int y) {
@@ -47,16 +63,7 @@ public class CableGrid : MonoBehaviour {
         cableTiles[(x, y)] = cableTile;
         map[x, y] = true;
 
-        // Regenerate power information
-        RegeneratePowerInfo();
-        
-        // Regenerate shadow tilemap
-        shadowManager.RegenerateShadowMap();
-
-        // Reset sprites on all cables
-        foreach (var key in cableTiles.Keys) {
-            cableTiles[key].ResetSprites(GetNeighbourCables(key.Item1, key.Item2));
-        }
+        RegenerateEverything();
     }
 
     public void RemoveCable(int x, int y) {
@@ -69,6 +76,10 @@ public class CableGrid : MonoBehaviour {
         cableTiles.Remove(coord);
         map[x, y] = false;
 
+        RegenerateEverything();
+    }
+
+    public void RegenerateEverything() {
         // Regenerate power information
         RegeneratePowerInfo();
 
