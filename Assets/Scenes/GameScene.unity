@@ -1316,6 +1316,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 25
   recoilStrength: 0.2
+  sprites:
+  - {fileID: 7388399842426930641, guid: 0d8bc1bbf5c234a94b2549bd7d5ec6b6, type: 3}
+  - {fileID: 6757282713640645180, guid: 0d8bc1bbf5c234a94b2549bd7d5ec6b6, type: 3}
+  - {fileID: -6781412095145881161, guid: 0d8bc1bbf5c234a94b2549bd7d5ec6b6, type: 3}
+  - {fileID: 1755772209161902963, guid: 0d8bc1bbf5c234a94b2549bd7d5ec6b6, type: 3}
+  - {fileID: 5865078278364869351, guid: 0d8bc1bbf5c234a94b2549bd7d5ec6b6, type: 3}
+  - {fileID: -2023923573111878767, guid: 0d8bc1bbf5c234a94b2549bd7d5ec6b6, type: 3}
+  - {fileID: -540375121143967267, guid: 0d8bc1bbf5c234a94b2549bd7d5ec6b6, type: 3}
+  - {fileID: 4334783836991956000, guid: 0d8bc1bbf5c234a94b2549bd7d5ec6b6, type: 3}
 --- !u!212 &1154982351
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1357,7 +1366,7 @@ SpriteRenderer:
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
-  m_Color: {r: 0.764151, g: 0, b: 0.5510073, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
