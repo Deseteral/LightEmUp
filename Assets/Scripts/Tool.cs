@@ -91,6 +91,7 @@ public class Tool : MonoBehaviour {
 
         if (didPlace) {
             gameMaster.coins -= cost;
+            gameMaster.score += 1;
         }
 
         return didPlace;
@@ -106,6 +107,7 @@ public class Tool : MonoBehaviour {
             var deviceObject = Instantiate(devicePrefab, tilePosition, Quaternion.identity, devicesContainer.transform);
             devicesMap[coord] = deviceObject;
             gameMaster.coins -= cost;
+            gameMaster.score += 25;
             return true;
         }
 

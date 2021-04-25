@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour {
     private GameObject coinsContainer;
     private AudioManager audioManager;
     private SpriteRenderer spriteRenderer;
+    private GameMaster gameMaster;
 
     private int enemyType = 0;
     public Sprite[] sprites;
@@ -26,6 +27,7 @@ public class Enemy : MonoBehaviour {
         player = GameObject.Find("Player");
         coinsContainer = GameObject.Find("CoinsContainer");
         spriteRenderer = GetComponent<SpriteRenderer>();
+        gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
 
         enemyType = Random.Range(0, 2);
         spriteRenderer.sprite = sprites[enemyType];
@@ -120,6 +122,8 @@ public class Enemy : MonoBehaviour {
         }
         
         audioManager.PlayExplosionSound(transform.position);
+        
+        gameMaster.score += 10;
     }
 
     public void PushBack(float strength) {
