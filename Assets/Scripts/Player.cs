@@ -68,56 +68,29 @@ public class Player : MonoBehaviour {
         if (Input.GetKey(KeyCode.Alpha4)) tool.toolType = ToolType.PlaceTurret;
 
         // Rotate sprite
-        var dir = (mouseInWorld - position);
-        float deadZone = 0.4f;
-        int idx = 0;
-        int xx = 0;
-        int yy = 0;
+        {
+            var dir = (mouseInWorld - position);
+            float deadZone = 0.4f;
+            int idx = 0;
+            int xx = 0;
+            int yy = 0;
 
-        Debug.Log(dir);
-        
-        if (dir.x > deadZone) xx = 1;
-        if (dir.x < -deadZone) xx = -1;
-        if (dir.y > deadZone) yy = 1;
-        if (dir.y < -deadZone) yy =  -1;
+            if (dir.x > deadZone) xx = 1;
+            if (dir.x < -deadZone) xx = -1;
+            if (dir.y > deadZone) yy = 1;
+            if (dir.y < -deadZone) yy = -1;
 
-        if (xx == 0 && yy == 1) idx = 0;
-        if (xx == 1 && yy == 1) idx = 1;
-        if (xx == 1 && yy == 0) idx = 2;
-        if (xx == 1 && yy == -1) idx = 3;
-        if (xx == 0 && yy == -1) idx = 4;
-        if (xx == -1 && yy == -1) idx = 5;
-        if (xx == -1 && yy == 0) idx = 6;
-        if (xx == -1 && yy == 1) idx = 7;
-        
-        // if (Mathf.Abs(dir.x) < deadZone) {
-        //     if (dir.y > 0) {
-        //         idx = 0;
-        //     } else {
-        //         idx = 4;
-        //     }
-        // } else if (Mathf.Abs(dir.y) < deadZone) {
-        //     if (dir.x > 0) {
-        //         idx = 2;
-        //     } else {
-        //         idx = 6;
-        //     }
-        // } else {
-        //     if (dir.x > 0 && dir.y > 0) {
-        //         idx = 1;
-        //     }
-        //     if (dir.x > 0 && dir.y < 0) {
-        //         idx = 3;
-        //     }
-        //     if (dir.x < 0 && dir.y > 0) {
-        //         idx = 7;
-        //     }
-        //     if (dir.x < 0 && dir.y > 0) {
-        //         idx = 5;
-        //     }
-        // }
+            if (xx == 0 && yy == 1) idx = 0;
+            if (xx == 1 && yy == 1) idx = 1;
+            if (xx == 1 && yy == 0) idx = 2;
+            if (xx == 1 && yy == -1) idx = 3;
+            if (xx == 0 && yy == -1) idx = 4;
+            if (xx == -1 && yy == -1) idx = 5;
+            if (xx == -1 && yy == 0) idx = 6;
+            if (xx == -1 && yy == 1) idx = 7;
 
-        spriteRenderer.sprite = sprites[idx];
+            spriteRenderer.sprite = sprites[idx];
+        }
     }
 
     private void OnGUI() {
