@@ -32,6 +32,8 @@ public class Tool : MonoBehaviour {
     private Dictionary<(int, int), GameObject> devicesMap;
 
     private Timer shootingDelayTimer = new Timer();
+    
+    private float maxPlacingDistance = 5f;
 
     private void Start() {
         cableGrid = GameObject.Find("CableGrid").GetComponent<CableGrid>();
@@ -82,6 +84,8 @@ public class Tool : MonoBehaviour {
     }
 
     private bool PlaceCable(Vector2 position) {
+        if (Vector2.Distance(transform.position, position) > maxPlacingDistance) return false;
+        
         var tilePosition = GetTilePosition(position);
 
         int cost = 1;
@@ -98,9 +102,11 @@ public class Tool : MonoBehaviour {
     }
 
     private bool PlaceDevice(Vector2 position, GameObject devicePrefab, int cost) {
+        if (Vector2.Distance(transform.position, position) > maxPlacingDistance) return false;
+        
         var tilePosition = GetTilePosition(position);
         var coord = ((int) tilePosition.x, (int) tilePosition.y);
-
+        
         if (gameMaster.coins < cost) return false;
         
         if (devicesMap.ContainsKey(coord) == false) {
@@ -123,6 +129,8 @@ public class Tool : MonoBehaviour {
     }
 
     private bool RemoveItem(Vector2 position) {
+        if (Vector2.Distance(transform.position, position) > maxPlacingDistance) return false;
+        
         var tilePosition = GetTilePosition(position);
         var coord = ((int) tilePosition.x, (int) tilePosition.y);
 
