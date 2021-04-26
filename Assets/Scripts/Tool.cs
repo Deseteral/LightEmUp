@@ -66,8 +66,8 @@ public class Tool : MonoBehaviour {
             int cost = toolType switch {
                 ToolType.Gun => 0,
                 ToolType.PlaceCable => 1,
-                ToolType.PlaceLamp => 25,
-                ToolType.PlaceTurret => 100,
+                ToolType.PlaceLamp => 75,
+                ToolType.PlaceTurret => 200,
                 _ => 0,
             };
 
@@ -158,11 +158,11 @@ public class Tool : MonoBehaviour {
     }
 
     private bool PlaceLamp(Vector2 position) {
-        return PlaceDevice(position, lampPrefab, 25);
+        return PlaceDevice(position, lampPrefab, 75);
     }
 
     private bool PlaceTurret(Vector2 position) {
-        return PlaceDevice(position, turretPrefab, 100);
+        return PlaceDevice(position, turretPrefab, 200);
     }
 
     private bool RemoveItem(Vector2 position) {
