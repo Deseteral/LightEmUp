@@ -2506,7 +2506,7 @@ MonoBehaviour:
   wallTopTile: {fileID: 11400000, guid: 027b0efbf3bce4ffd87ae6ea74e7bbf3, type: 2}
   shadowTile: {fileID: 11400000, guid: 7d7421e3629f0407f97f640add8f7ebf, type: 2}
   enemySpawner: {fileID: 8204885434059153406, guid: 016f11b554c02402b9c2fd03e8434492, type: 3}
-  size: 50
+  size: 35
 --- !u!4 &1236830760
 Transform:
   m_ObjectHideFlags: 0
