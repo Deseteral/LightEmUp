@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public enum ToolType {
@@ -11,6 +13,7 @@ public enum ToolType {
 }
 
 public class Tool : MonoBehaviour {
+    public bool isPlayer = false;
     public float spread = 10f;
     public int shootingDelayMs = 150;
     public ToolType toolType = ToolType.Gun;
@@ -29,11 +32,14 @@ public class Tool : MonoBehaviour {
 
     private GameMaster gameMaster;
     private AudioManager audioManager;
+    
+    private Text costText;
+    private Image costIcon;
 
     private Dictionary<(int, int), GameObject> devicesMap;
 
     private Timer shootingDelayTimer = new Timer();
-    
+
     private float maxPlacingDistance = 5f;
 
     private void Start() {
@@ -44,6 +50,9 @@ public class Tool : MonoBehaviour {
         coinsContainer = GameObject.Find("CoinsContainer");
         gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        
+        costText = GameObject.Find("Cost").GetComponent<Text>();
+        costIcon = GameObject.Find("CostIcon").GetComponent<Image>();
 
         devicesMap = new Dictionary<(int, int), GameObject>();
 
@@ -52,6 +61,24 @@ public class Tool : MonoBehaviour {
 
     private void FixedUpdate() {
         shootingDelayTimer.Update();
+
+        if (isPlayer) {
+            int cost = toolType switch {
+                ToolType.Gun => 0,
+                ToolType.PlaceCable => 1,
+                ToolType.PlaceLamp => 25,
+                ToolType.PlaceTurret => 100,
+                _ => 0,
+            };
+
+            if (cost != 0) {
+                costText.text = cost.ToString();
+                costIcon.enabled = true;
+            } else {
+                costText.text = "";
+                costIcon.enabled = false;
+            }
+        }
     }
 
     public bool Use(Vector2 positionOrDirection) {
@@ -95,12 +122,12 @@ public class Tool : MonoBehaviour {
 
     private bool PlaceCable(Vector2 position) {
         if (Vector2.Distance(transform.position, position) > maxPlacingDistance) return false;
-        
+
         var tilePosition = GetTilePosition(position);
 
         int cost = 1;
         if (gameMaster.coins < cost) return false;
-        
+
         bool didPlace = cableGrid.PlaceCable((int) tilePosition.x, (int) tilePosition.y);
 
         if (didPlace) {
@@ -113,12 +140,12 @@ public class Tool : MonoBehaviour {
 
     private bool PlaceDevice(Vector2 position, GameObject devicePrefab, int cost) {
         if (Vector2.Distance(transform.position, position) > maxPlacingDistance) return false;
-        
+
         var tilePosition = GetTilePosition(position);
         var coord = ((int) tilePosition.x, (int) tilePosition.y);
-        
+
         if (gameMaster.coins < cost) return false;
-        
+
         if (devicesMap.ContainsKey(coord) == false) {
             var deviceObject = Instantiate(devicePrefab, tilePosition, Quaternion.identity, devicesContainer.transform);
             devicesMap[coord] = deviceObject;
@@ -140,7 +167,7 @@ public class Tool : MonoBehaviour {
 
     private bool RemoveItem(Vector2 position) {
         if (Vector2.Distance(transform.position, position) > maxPlacingDistance) return false;
-        
+
         var tilePosition = GetTilePosition(position);
         var coord = ((int) tilePosition.x, (int) tilePosition.y);
 
@@ -150,11 +177,11 @@ public class Tool : MonoBehaviour {
             var devicePosition = device.transform.position;
             devicesMap.Remove(coord);
             Destroy(device.gameObject);
-            
+
             for (int i = 0; i < Random.Range(1, 5); i++) {
                 Instantiate(coinPrefab, devicePosition, Quaternion.identity, coinsContainer.transform);
             }
-            
+
             return true;
         }
 
