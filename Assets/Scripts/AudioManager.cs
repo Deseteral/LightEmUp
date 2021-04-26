@@ -6,24 +6,53 @@ public class AudioManager : MonoBehaviour {
     public AudioClip pickupCoinSound;
     public AudioClip[] explosionSounds;
     public AudioClip shootingGunSound;
+    public AudioClip hurtSound;
+    public AudioClip placeItemSound;
+    public AudioClip cannotPlaceItemSound;
 
     private AudioSource playerAudioSource;
 
     private float pickupCoinPitch = 1f;
     private Timer pickupCoinTimer = new Timer();
+    private Timer cannotPlaceTimer = new Timer();
 
     private void Start() {
         playerAudioSource = GameObject.Find("Player").GetComponent<AudioSource>();
         pickupCoinTimer.Set(0);
+        cannotPlaceTimer.Set(0);
     }
 
     private void FixedUpdate() {
         pickupCoinTimer.Update();
+        cannotPlaceTimer.Update();
     }
 
     private AudioSource CreateSoundEffectPlayerAt(Vector2 position) {
         var go = Instantiate(soundEffectPlayerPrefab, position, Quaternion.identity, transform);
         return go.GetComponent<AudioSource>();
+    }
+
+    public void PlayHurtSound(Vector2 position) {
+        var audioSource = CreateSoundEffectPlayerAt(position);
+        
+        audioSource.pitch = 1f;
+        audioSource.volume = 1f;
+        audioSource.PlayOneShot(hurtSound);
+    }
+    
+    public void PlayPlaceItemSound() {
+        playerAudioSource.pitch = pickupCoinPitch;
+        playerAudioSource.volume = 0.75f;
+        playerAudioSource.PlayOneShot(placeItemSound);
+    }
+    
+    public void PlayCannotPlaceItemSound() {
+        if (cannotPlaceTimer.Check() == false) return;
+
+        playerAudioSource.pitch = pickupCoinPitch;
+        playerAudioSource.volume = 0.75f;
+        playerAudioSource.PlayOneShot(placeItemSound);
+        cannotPlaceTimer.Set(1000);
     }
     
     public void PlayPickupCoinSound() {

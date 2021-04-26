@@ -14,6 +14,7 @@ public class Damageable : MonoBehaviour {
     private EnemySpawner enemySpawner;
     private Player player;
     private GameMaster gameMaster;
+    private AudioManager audioManager;
 
     void Start() {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -22,6 +23,7 @@ public class Damageable : MonoBehaviour {
         enemySpawner = GetComponent<EnemySpawner>();
         player = GetComponent<Player>();
         gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         originalColor = spriteRenderer.color;
     }
@@ -50,11 +52,13 @@ public class Damageable : MonoBehaviour {
         if (other.collider.CompareTag("Bullet") && ignoreBullets == false) {
             health -= 34; // 33.3 rounded up
             blink = true;
+            audioManager.PlayHurtSound(transform.position);
         }
 
         if (other.collider.CompareTag("Enemy") && ignoreEnemies == false) {
             health -= 5;
             blink = true;
+            audioManager.PlayHurtSound(transform.position);
         }
     }
 }

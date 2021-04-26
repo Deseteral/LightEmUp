@@ -2919,6 +2919,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c2f321ebd0dc8433b970936c299b59a8, type: 3}
   - {fileID: 8300000, guid: 2a22f79b2d0b944f4a6321dcb28666be, type: 3}
   shootingGunSound: {fileID: 8300000, guid: ce2fc6cf2efd74153a520293dc482522, type: 3}
+  hurtSound: {fileID: 8300000, guid: 446c11cbe5c1747a68e43cd471671a73, type: 3}
+  placeItemSound: {fileID: 8300000, guid: d350d232d1f0347f69bcf21e62404b31, type: 3}
+  cannotPlaceItemSound: {fileID: 8300000, guid: d6c334d3d2fc34e53955c262f1140ab2, type: 3}
 --- !u!4 &1801229046
 Transform:
   m_ObjectHideFlags: 0

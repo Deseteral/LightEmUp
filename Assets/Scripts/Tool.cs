@@ -28,6 +28,7 @@ public class Tool : MonoBehaviour {
     private GameObject coinsContainer;
 
     private GameMaster gameMaster;
+    private AudioManager audioManager;
 
     private Dictionary<(int, int), GameObject> devicesMap;
 
@@ -42,6 +43,7 @@ public class Tool : MonoBehaviour {
         devicesContainer = GameObject.Find("DevicesContainer");
         coinsContainer = GameObject.Find("CoinsContainer");
         gameMaster = GameObject.Find("GameMaster").GetComponent<GameMaster>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         devicesMap = new Dictionary<(int, int), GameObject>();
 
@@ -53,13 +55,21 @@ public class Tool : MonoBehaviour {
     }
 
     public bool Use(Vector2 positionOrDirection) {
-        return toolType switch {
+        bool didDo = toolType switch {
             ToolType.Gun => Shoot(positionOrDirection),
             ToolType.PlaceCable => PlaceCable(positionOrDirection),
             ToolType.PlaceLamp => PlaceLamp(positionOrDirection),
             ToolType.PlaceTurret => PlaceTurret(positionOrDirection),
             _ => false,
         };
+
+        if (didDo && toolType != ToolType.Gun) {
+            audioManager.PlayPlaceItemSound();
+        } else if (!didDo && toolType != ToolType.Gun) {
+            audioManager.PlayCannotPlaceItemSound();
+        }
+
+        return didDo;
     }
 
     public bool SecondaryUse(Vector2 position) {
