@@ -14,6 +14,8 @@ public class MinimapManager : MonoBehaviour {
     private static Color WALL_COLOR = new Color(13f / 255f, 66f / 255f, 50f / 255f);
     private static Color GROUND_COLOR = new Color(0x4e / 255f, 0x4e / 255f, 0x4e / 255f);
     private static Color CABLE_COLOR = new Color(0f / 255f, 200f / 255f, 189f / 255f);
+    private static Color GENERATOR_COLOR = Color.green;
+    private static Color ENDPOINT_COLOR = Color.red;
 
     private void Start() {
         playerObject = GameObject.Find("Player");
@@ -31,7 +33,9 @@ public class MinimapManager : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        var collisonMap = mapGenerator.GetCollisonMap();
+        var collisionMap = mapGenerator.GetCollisonMap();
+        var (genX, genY) = mapGenerator.generatorCoords;
+        var (endX, endY) = mapGenerator.endpointCoords;
         var playerPosition = playerObject.transform.position;
         int tx = (int) playerPosition.x;
         int ty = (int) playerPosition.y;
@@ -43,9 +47,13 @@ public class MinimapManager : MonoBehaviour {
                 if (x < 0 || x >= mapGenerator.size) continue;
 
                 if (Vector2.Distance(new Vector2(x, y), playerPosition) <= radius) {
-                    if (cableGrid.IsTilePowered(x, y)) {
+                    if (x == genX && y == genY) {
+                        texture.SetPixel(x, y, GENERATOR_COLOR);
+                    } else if (x == endX && y == endY) {
+                        texture.SetPixel(x, y, ENDPOINT_COLOR);
+                    } else if (cableGrid.IsTilePowered(x, y)) {
                         texture.SetPixel(x, y, CABLE_COLOR);
-                    } else if (collisonMap[x, y]) {
+                    } else if (collisionMap[x, y]) {
                         texture.SetPixel(x, y, WALL_COLOR);
                     } else {
                         texture.SetPixel(x, y, GROUND_COLOR);

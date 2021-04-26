@@ -20,6 +20,7 @@ public class MapGenerator : MonoBehaviour {
 
     public int size = 50;
     public (int, int) generatorCoords;
+    public (int, int) endpointCoords;
 
     private bool[,] m;
 
@@ -42,6 +43,7 @@ public class MapGenerator : MonoBehaviour {
 
             var (endpointX, endpointY, _) = FindEndpointTile(spawnX, spawnY);
             if (endpointX == -1 || endpointY == -1) continue;
+            endpointCoords = (endpointX, endpointY);
 
             isValidMap = true;
 
